@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: shell | SagerXiao's Blog]]></title>
+  <link href="http://sagerblog.github.com/blog/categories/shell/atom.xml" rel="self"/>
+  <link href="http://sagerblog.github.com/"/>
+  <updated>2012-12-26T18:57:59+08:00</updated>
+  <id>http://sagerblog.github.com/</id>
+  <author>
+    <name><![CDATA[Sager Xiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[经典实用的Shell命令]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/24/useful-shell/"/>
+    <updated>2012-12-24T09:02:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/24/useful-shell</id>
+    <content type="html"><![CDATA[<p><strong>1、ls -AQ|grep -v proc|xargs du -sh|sort -h</strong></p>
+
+<p>按从小到大的顺序显示根目录下除proc目录以外的所有文件及目录大小（须在根目录下执行该命令）</p>
+
+<p><strong>2、dpkg -l |grep ^rc |awk '{print $2}' |xargs dpkg --purge</strong></p>
+
+<p>删除已删除包的残留配置文件（Debian分支）</p>
+
+<p><strong>3、find . -type f -print |xargs du -sb |sort -h</strong></p>
+
+<p>查找当下目录及其子目录下面的所有文件，并按文件大小，由小到大排序</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -3,7 +3,7 @@ layout: post
 title: "最小化安装Fedora"
 date: 2012-12-24 09:17
 comments: true
-categories: 
+categories: [linux, it]
 ---
 
 1.光盘引导
