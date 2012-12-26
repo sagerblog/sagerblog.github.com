@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[SagerXiao's Blog]]></title>
+  <link href="http://sagerblog.github.com/atom.xml" rel="self"/>
+  <link href="http://sagerblog.github.com/"/>
+  <updated>2012-12-26T18:57:59+08:00</updated>
+  <id>http://sagerblog.github.com/</id>
+  <author>
+    <name><![CDATA[Sager Xiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu安装Dropbox后无法连接服务器的解决方法]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/26/ubuntu-dropbox/"/>
+    <updated>2012-12-26T07:50:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/26/ubuntu-dropbox</id>
+    <content type="html"><![CDATA[<p>由于工作需要，操作系统从Mac换到了Ubuntu，现在这个年代，谁没个云存储啥的，Dropbox当然是首选（通过某些方式已经将免费空间提升到25G了），装完Ubuntu后第一个事情就是装Dropbox。</p>
+
+<p>于是我就马不停蹄地下载了Dropbox的安装包然后装到Ubuntu上，装完一打开，弹出这么个提示：“Trouble connecting to Dropbox server.Maybe your internet connection is down,or you need to set your http_proxy environment variable”，主要意思就说无法连接上dropbox的服务器。</p>
+
+<p>然后我把hosts改了，问题依旧…，只有祭出google大神了</p>
+
+<p>原来装了那个deb包还不算装完，第一次启动时还要下载一个.tar.gz的包，明显这个包的地址在墙外了。</p>
+
+<p>所以需要到这个地址 <a href="http://www.getdropbox.com/download?plat=lnx.x86">http://www.getdropbox.com/download?plat=lnx.x86</a> 下载这个.tar.gz包，当然要先爬墙。（我把这个文件传到了华为网盘 <a href="http://dl.vmall.com/c0sgq6m4m6">http://dl.vmall.com/c0sgq6m4m6</a> ，无法爬墙的同学如果信得过我的话可以下载）</p>
+
+<p>然后在下载到的dropbox-lnx.x86-1.2.52.tar.gz文件解压到主文件夹，是个隐藏文件夹.dropbox-dist, 按“Ctrl + h”显示隐藏文件</p>
+
+<p>最后打开dropbox即可正常使用啦～</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[VirtualBox中复制使用虚拟硬盘]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/24/copy-virtualbox-hd/"/>
+    <updated>2012-12-24T22:56:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/24/copy-virtualbox-hd</id>
+    <content type="html"><![CDATA[<p>VirtualBox可不像VMware那样，直接复制虚拟磁盘文件就可以了事的，只因为VirtualBox识别虚拟磁盘文件VDI采用了uuid识别技术。</p>
+
+<p>由于测试需要搭建局域网环境，需要两台虚拟机同时运行。当我安装完一个虚拟系统时，我将虚拟磁盘文件复制一份重新创建虚拟系统时提示打开虚拟硬盘 windowsxp.vdi 失败。</p>
+
+<pre><code>Cannot register the hard disk 'windowsxp.vdi' with UUID {24eb969f-8c98-470d-b2dd-35318f2b8860} 
+because a hard disk 'windowsxp.vdi' with UUID {24eb969f-8c98-470d-b2dd-35318f2b8860} already exists 
+in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
+</code></pre>
+
+<p>往Google里找寻了一番，原来Virtualbox也是有VBoxManage命令的,于是我决定给复制的vdi文件重新分配uuid。</p>
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span>重新分配uuid</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sager@sager-desktop:~/VirtualBox VMs/WinXP&gt;VBoxManage internalcommands sethduuid windowsxp.vdi
+</span><span class='line'>UUID changed to: c8acda7d-149d-4157-affb-2d2dbc1bab7
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接着就可以使用拷贝的vdi文件正常的创建第二台虚拟机了。</p>
+
+<p>当然如果你没有直接复制vdi文件,那么直接用Virtualbox自带的克隆vdi文件命令。</p>
+
+<figure class='code'><figcaption><span>自带克隆vdi文件</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sager@sager-desktop:~/VirtualBox VMs/WinXP&gt;VBoxManage clonehd windowsxp.vdi winxp.clone.vdi
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Virualbox的快照功能非常不错,可以即时恢复到快照时的状态，做试验就不用重新配环境了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[使用多个ssh key登录github不同账号]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/"/>
+    <updated>2012-12-24T14:09:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/24/multi-github-account</id>
+    <content type="html"><![CDATA[<p>使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。</p>
+
+<p>例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/hosts文件，设置两个本地域名指向github.com</p>
+
+<figure class='code'><figcaption><span>/etc/hosts  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>a.github.com    github.com  <span class="c">#a.github.com可以是任意文字</span>
+</span><span class='line'>b.github.com    github.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>修改用户的ssh配置文件~/.ssh/config，示例如下：</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span>~/.ssh/config </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>Host a.github.com
+</span><span class='line'>    User git
+</span><span class='line'>    Hostname github.com
+</span><span class='line'>    PreferredAuthentications publickey
+</span><span class='line'>    IdentityFile ~/.ssh/id_rsa_a
+</span><span class='line'>Host b.github.com
+</span><span class='line'>    User git
+</span><span class='line'>    Hostname github.com
+</span><span class='line'>    PreferredAuthentications publickey
+</span><span class='line'>    IdentityFile ~/.ssh/id_rsa_b
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后在你的git仓库的远程地址中，将对应的a.github.com和b.github.com替换原来的github.com，参考下面的变化：</p>
+
+<figure class='code'><figcaption><span>git clone </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git@a.githuc.com:sagerblog/sagerblog.github.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[最小化安装Fedora]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/24/min-fedora/"/>
+    <updated>2012-12-24T09:17:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/24/min-fedora</id>
+    <content type="html"><![CDATA[<p>1.光盘引导</p>
+
+<p>进入到Fedora 16的安装引导界面，按TAB键，在后面追加数字3，Enter，</p>
+
+<p>然后系统引导，弹出一个登录，使用root直接登录即可。</p>
+
+<p>2.运行如下命令</p>
+
+<p>/usr/sbin/anaconda &#8211;liveinst &#8211;method=livecd:///dev/mapper/live-osimg-min</p>
+
+<p>然后提示完成安装即可。</p>
+
+<p>3.最后需要修改一个默认启动到文本界面</p>
+
+<!-- more -->
+
+
+<p>cd /etc/systemd/system</p>
+
+<p>ln -s /lib/systemd/system/multi-user.target default.target</p>
+
+<p>4.参考</p>
+
+<p>http://www.linuxreaders.com/2010/09/08/install-fedora-from-live-cd-cli/#.T1YF74da6G4</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[经典实用的Shell命令]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/24/useful-shell/"/>
+    <updated>2012-12-24T09:02:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/24/useful-shell</id>
+    <content type="html"><![CDATA[<p><strong>1、ls -AQ|grep -v proc|xargs du -sh|sort -h</strong></p>
+
+<p>按从小到大的顺序显示根目录下除proc目录以外的所有文件及目录大小（须在根目录下执行该命令）</p>
+
+<p><strong>2、dpkg -l |grep ^rc |awk &#8216;{print $2}&#8217; |xargs dpkg &#8211;purge</strong></p>
+
+<p>删除已删除包的残留配置文件（Debian分支）</p>
+
+<p><strong>3、find . -type f -print |xargs du -sb |sort -h</strong></p>
+
+<p>查找当下目录及其子目录下面的所有文件，并按文件大小，由小到大排序</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My first Octopress test page]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/23/first/"/>
+    <updated>2012-12-23T22:28:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/23/first</id>
+    <content type="html"><![CDATA[<p><a href='http://sagerxiao.github.com/presentations/'>Sager&#8217;s HTML5 presentations</a></p>
+
+<figure class='code'><figcaption><span>Discover if a number is prime </span><a href='http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/'>Source Article</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Fixnum</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">prime?</span>
+</span><span class='line'>      <span class="p">(</span><span class="s1">&#39;1&#39;</span> <span class="o">*</span> <span class="nb">self</span><span class="p">)</span> <span class="o">!~</span> <span class="sr">/^1?$|^(11+?)\1+$/</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Discover if a number is prime </span><a href='http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/'>Source Article</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">sudo</span> <span class="n">make</span> <span class="n">me</span> <span class="n">a</span> <span class="n">sandwich</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<div><script src='https://gist.github.com/1059334.js?file=svg_bullets.rb'></script>
+<noscript><pre><code>require 'sass'
+
+module Sass::Script::Functions
+  def svg_circle(radius, color, circle_type)
+    img = if circle_type.value == &quot;disc&quot;
+      %Q{&lt;circle cx=&quot;#{radius.value}&quot; cy=&quot;#{radius.value}&quot; r=&quot;#{radius.value}&quot;
+                          stroke-width=&quot;0&quot; fill=&quot;#{color}&quot;/&gt;}
+    else
+      %Q{&lt;circle cx=&quot;#{radius.value}&quot; cy=&quot;#{radius.value}&quot; r=&quot;#{radius.value}&quot;
+                          stroke=&quot;#{color}&quot; stroke-width=&quot;1&quot; fill=&quot;white&quot;/&gt;}
+    end
+    inline_image_string(svg_circle_envelope(img).gsub(/  +/, ' '), 'image/svg+xml')
+  end
+  private
+  def svg_circle_envelope(content)
+    %Q{&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; &lt;svg version=&quot;1.1&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;#{content}&lt;/svg&gt;}
+  end
+end
+</code></pre></noscript></div>
+
+
+
+
+<figure class='code'><figcaption><span>Login to 163 email </span><a href='http://mail.163.com'>163邮件系统</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Login163</span><span class="p">:</span>
+</span><span class='line'>   <span class="c">#伪装browser</span>
+</span><span class='line'>    <span class="n">header</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;User-Agent&#39;</span><span class="p">:</span><span class="s">&#39;Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6)</span><span class="se">\</span>
+</span><span class='line'><span class="s">        Gecko/20091201 Firefox/3.5.6&#39;</span><span class="p">}</span>
+</span><span class='line'>    <span class="n">username</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+</span><span class='line'>    <span class="n">passwd</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+</span><span class='line'>    <span class="n">cookie</span> <span class="o">=</span> <span class="bp">None</span> <span class="c">#cookie对象</span>
+</span><span class='line'>    <span class="n">cookiefile</span> <span class="o">=</span> <span class="s">&#39;./cookies.dat&#39;</span> <span class="c">#cookie临时存放地</span>
+</span><span class='line'>    <span class="n">user</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">username</span><span class="p">,</span><span class="n">passwd</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">passwd</span> <span class="o">=</span> <span class="n">passwd</span>
+</span><span class='line'>        <span class="c">#cookie设置</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">cookie</span> <span class="o">=</span> <span class="n">cookielib</span><span class="o">.</span><span class="n">LWPCookieJar</span><span class="p">()</span> <span class="c">#自定义cookie存放</span>
+</span><span class='line'>        <span class="n">opener</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">build_opener</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">HTTPCookieProcessor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cookie</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">urllib2</span><span class="o">.</span><span class="n">install_opener</span><span class="p">(</span><span class="n">opener</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span>Javascript Array Syntax </span><a href='http://j.mp/pPUUmW'>MDN Documentation </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">arr1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">arrayLength</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">arr2</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">element0</span><span class="p">,</span> <span class="nx">element1</span><span class="p">,</span> <span class="p">...,</span> <span class="nx">elementN</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We made 1 million dollars  this year</p>
+
+<p>rake new_post[&#8220;My New Post&#8221;]</p>
+
+<p>edit my-new-post.markdown with text editor</p>
+
+<p>jekyll markup</p>
+
+<figure class='code'><figcaption><span>Preview&Deploy  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake preview
+</span><span class='line'>rake generate
+</span><span class='line'>rake deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Commit source  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git add .
+</span><span class='line'>git ci -am <span class="s1">&#39;your message&#39;</span>
+</span><span class='line'>git push origin <span class="nb">source</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://placekitten.com/890/280">
+Bacon ipsum dolor sit amet exercitation ball tip consectetur tempor. Biltong exercitation aliqua, ribeye consequat veniam consectetur.</p>
+
+<p><img class="left" src="http://placekitten.com/320/250" title="Place Kitten #2" >
+Aliquip nulla do tempor, ball tip dolore anim esse strip steak nisi nostrud. Tri-tip mollit deserunt ut duis, commodo brisket short loin est hamburger sunt consequat rump meatloaf. Exercitation enim aliqua tempor dolore. Non eu venison, officia boudin tri-tip enim beef ribs flank cupidatat in aute. Tail voluptate fugiat aute flank, venison sint.</p>
+
+<p><img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #3" >
+Brisket quis velit bresaola. Pork loin pork chop beef duis. Short loin fugiat officia short ribs magna. Ullamco eu proident jerky, fugiat chuck nostrud ham rump meatloaf eiusmod adipisicing. Qui et reprehenderit, magna biltong consequat short ribs pancetta. Tail tenderloin sausage, hamburger corned beef drumstick ad. Eu labore enim velit.</p>
+
+<p><img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #4" alt="An image of a very cute kitten">
+Filler text courtesy of Bacon Ipsum, Images courtesy of Place Kitten.</p>
+
+<blockquote><p>Last night I lay in bed looking up at the stars in the sky and I thought to myself, where the heck is the ceiling.</p></blockquote>
+
+
+<p>那么一个极客眼中的博客应该具备哪些要素？</p>
+
+<p><strong>1. 基于文本的编辑</strong></p>
+
+<p>作为极客，你必须很在意 Vim, Emacs 之流，你应该鄙视一切在 Office，Web 里的文字工作，Office 之流很方便使用，但是实在没有什么效率。即便在我们这个行业里，很多人至今没有弄清楚方便不等于高效这个道理。所以我个人只认同使用 Vim 方式处理任何文本工作，包括代码和博客。</p>
+
+<p><strong>2. 方便的书写和阅读格式</strong></p>
+
+<p>假设你承认上述第一点的理念，那么我们还是在写博客，仍然需要格式化的文字使得文字本身在网络上更富表现力，方便读者阅读。但是 html 是一种很冗余的格式存在，既不方便书写也不方便对编辑的源码直接阅读。同时纯文本的格式又走上了另一个极端，书写和阅读基本没有任何代价，坏处在于纯文本几乎又没有任何表现力，除了可以分出段落，它不能粗体，不能斜体，不能更改字号，不能列表。所以结论是：我们需要一种介于 html 和纯文本之间的格式来书写博客，它有不那么大的书写和阅读的成本，又兼顾一定的文字表现力。答案就是 <a href="http://daringfireball.net/projects/markdown/">Markdown</a>，再送一份红利就是在线的 <a href="http://www.ctrlshift.net/project/markdowneditor/">Markdown Editor</a>。</p>
+
+<p><strong>3. 灵活的备份和恢复</strong></p>
+
+<p>这是一条足以放弃 WordPress 的重要理由。我们无非是在码字而已，没有理由引入数据库，基于文本的保存是最安全的保存，它便于检索(grep)，容易导入，导出，不依赖于任何第三方软件或者操作系统。几百年后，这篇文档仍然可以被那时的计算机打开，这很重要，好比我们今天仍然有机会看到前人的青铜器，但是我们的后人只能从图片上看看今天的各类一次性制品。如果要求更高一些，我们还希望有类似管理代码的方式来管理我们的博客，同样是文本，Version Control System 不应该是代码的专有权利。中央服务器也可以保证在任何地方，任何时候检出，更新，提交你的博客，并且也不妨碍除你以外的人这么做。</p>
+
+<p><strong>4. 基于命令行的操作方式</strong></p>
+
+<p>极客的重要特征是远离 Windows，所以我们甚至应该幻想一个 Windows 不友好的方式来写博客。它应该尽量基于命令行，在 Linux 系统上运行良好，羞啥那些 Windows 上的普通青年和 Mac 上的文艺青年，这不是说我很大度的表示我就是2B青年，只是我实在不愿意诸君承担2B青年的包袱，只好自己大度的承担罢了。</p>
+
+<p><strong>5. 支持代码片段的显示</strong></p>
+
+<p>偶尔想秀个小代码也是装2的内在诉求和外在表现之一，所以我们的博客应该是可以这样子的：</p>
+
+<figure class='code'><figcaption><span>Code Snips to test code blocks </span><a href='http://www.google.com'>link test</a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">TestCode</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">pass</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">testCode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&#39;hello world!&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>6. 最后的最后，不缩水的博客</strong></p>
+
+<p>好处不能都被你这个2B青年占完了不是吗？你要这个要那个，都满足你了，末了扔给你一个缩水的博客，你不由自主的和那些个不入你法眼的新浪博客，不讨巧的 WordPress 做比较了，于是你又开始不满意了。好吧，我们折中一下，RSS 导出不能少，分享到 Facebook，Twitter，甚至于新浪微博也不能落下，还要能访客留言，搜索过往，提示最近的博客，标注 tag。于是是除了你那些个蛋疼的特殊癖好，别人有的也全都要满足。。。</p>
+
+<h1>Mou</h1>
+
+<pre><code>1. 真的没什么
+2. 其实有意思的
+</code></pre>
+
+<p><strong><a href="http://mouapp.com/">Mou</a></strong>， the missing <code>Markdown</code> editor for <em><code>web developers</code></em>.</p>
+
+<figure class='code'><figcaption><span>Python&#8217;s print function </span><a href='http://sagerblog.github.com'>Test code</a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&#39;Hello octopress&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Login to 163 email </span><a href='http://mail.163.com'>163邮件系统</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&#39;Hello octopress&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>Backup system configuration files</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="nv">$SHELL</span>
+</span><span class='line'>tar cvfz /home/sager/bakup/etc.tar.gz /etc/ *
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>echo $SHELL
+tar cvfz /home/sager/bakup/etc.tar.gz /etc/ *
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
