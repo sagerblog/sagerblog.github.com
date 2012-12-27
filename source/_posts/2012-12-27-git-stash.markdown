@@ -1,0 +1,23 @@
+---
+layout: post
+title: "使用git stash暂存修改"
+date: 2012-12-27 10:40
+comments: true
+categories: [git, cvs]
+---
+当你需要在不同的branch之间切换的时候，可以把当前工作区的修改内容加入到暂存堆栈，也可以随时取出
+
+###git stash###
+将当前的修改保存在暂存堆栈
+
+###git stash pop###
+将最新暂存堆栈的内容恢复到工作区
+<!-- more -->
+###git stash pop {num}###
+将指定序号的暂存堆栈的内容恢复到工作区
+
+###git stash list###
+查看当前暂存堆栈中有哪些内容
+
+###git stash clear###
+清空暂存堆栈的内容
