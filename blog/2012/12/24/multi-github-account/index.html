@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>使用多个ssh key登录github不同账号 - SagerXiao's Blog</title>
+  <meta name="author" content="Sager Xiao">
+
+  
+  <meta name="description" content="使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。 例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="SagerXiao's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">SagerXiao's Blog</a></h1>
+  
+    <h2>Restart of a old programmer</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:sagerblog.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">使用多个ssh Key登录github不同账号</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-24T14:09:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。</p>
+
+<p>例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/hosts文件，设置两个本地域名指向github.com</p>
+
+<figure class='code'><figcaption><span>/etc/hosts  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>a.github.com    github.com  <span class="c">#a.github.com可以是任意文字</span>
+</span><span class='line'>b.github.com    github.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>修改用户的ssh配置文件~/.ssh/config，示例如下：</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span>~/.ssh/config </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>Host a.github.com
+</span><span class='line'>    User git
+</span><span class='line'>    Hostname github.com
+</span><span class='line'>    PreferredAuthentications publickey
+</span><span class='line'>    IdentityFile ~/.ssh/id_rsa_a
+</span><span class='line'>Host b.github.com
+</span><span class='line'>    User git
+</span><span class='line'>    Hostname github.com
+</span><span class='line'>    PreferredAuthentications publickey
+</span><span class='line'>    IdentityFile ~/.ssh/id_rsa_b
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后在你的git仓库的远程地址中，将对应的a.github.com和b.github.com替换原来的github.com，参考下面的变化：</p>
+
+<figure class='code'><figcaption><span>git clone </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git@a.githuc.com:sagerblog/sagerblog.github.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Sager Xiao</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-24T14:09:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/ssh/'>ssh</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/" data-via="" data-counturl="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/24/min-fedora/" title="Previous Post: 最小化安装Fedora">&laquo; 最小化安装Fedora</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/24/copy-virtualbox-hd/" title="Next Post: VirtualBox中复制使用虚拟硬盘">VirtualBox中复制使用虚拟硬盘 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/12/27/git-stash/">使用git stash暂存修改</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/26/ubuntu-dropbox/">Ubuntu安装Dropbox后无法连接服务器的解决方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/24/copy-virtualbox-hd/">VirtualBox中复制使用虚拟硬盘</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/24/multi-github-account/">使用多个ssh key登录github不同账号</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/24/min-fedora/">最小化安装Fedora</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/sagerxiao">@sagerxiao</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'sagerxiao',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/sagerxiao?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Sager Xiao -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sagerblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sagerblog.github.com/blog/2012/12/24/multi-github-account/';
+        var disqus_url = 'http://sagerblog.github.com/blog/2012/12/24/multi-github-account/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

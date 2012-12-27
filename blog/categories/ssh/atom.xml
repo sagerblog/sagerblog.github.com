@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ssh | SagerXiao's Blog]]></title>
+  <link href="http://sagerblog.github.com/blog/categories/ssh/atom.xml" rel="self"/>
+  <link href="http://sagerblog.github.com/"/>
+  <updated>2012-12-27T10:52:31+08:00</updated>
+  <id>http://sagerblog.github.com/</id>
+  <author>
+    <name><![CDATA[Sager Xiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用多个ssh key登录github不同账号]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/"/>
+    <updated>2012-12-24T14:09:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/24/multi-github-account</id>
+    <content type="html"><![CDATA[<p>使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。</p>
+
+<p>例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/hosts文件，设置两个本地域名指向github.com
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/etc/hosts  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>a.github.com    github.com  <span class="c">#a.github.com可以是任意文字</span>
+</span><span class='line'>b.github.com    github.com
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>修改用户的ssh配置文件~/.ssh/config，示例如下：</p>
+
+<!-- more -->
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>~/.ssh/config </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>Host a.github.com&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;User git
+</span><span class='line'>Hostname github.com
+</span><span class='line'>PreferredAuthentications publickey
+</span><span class='line'>IdentityFile ~/.ssh/id_rsa_a
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Host b.github.com&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;User git
+</span><span class='line'>Hostname github.com
+</span><span class='line'>PreferredAuthentications publickey
+</span><span class='line'>IdentityFile ~/.ssh/id_rsa_b
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>然后在你的git仓库的远程地址中，将对应的a.github.com和b.github.com替换原来的github.com，参考下面的变化：
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>git clone </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git@a.githuc.com:sagerblog/sagerblog.github.com
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+</feed>

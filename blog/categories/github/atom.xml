@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: github | SagerXiao's Blog]]></title>
+  <link href="http://sagerblog.github.com/blog/categories/github/atom.xml" rel="self"/>
+  <link href="http://sagerblog.github.com/"/>
+  <updated>2012-12-27T10:52:31+08:00</updated>
+  <id>http://sagerblog.github.com/</id>
+  <author>
+    <name><![CDATA[Sager Xiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用多个ssh key登录github不同账号]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/"/>
+    <updated>2012-12-24T14:09:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/24/multi-github-account</id>
+    <content type="html"><![CDATA[<p>使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。</p>
+
+<p>例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/hosts文件，设置两个本地域名指向github.com
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/etc/hosts  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>a.github.com    github.com  <span class="c">#a.github.com可以是任意文字</span>
+</span><span class='line'>b.github.com    github.com
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>修改用户的ssh配置文件~/.ssh/config，示例如下：</p>
+
+<!-- more -->
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>~/.ssh/config </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>Host a.github.com&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;User git
+</span><span class='line'>Hostname github.com
+</span><span class='line'>PreferredAuthentications publickey
+</span><span class='line'>IdentityFile ~/.ssh/id_rsa_a
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Host b.github.com&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;User git
+</span><span class='line'>Hostname github.com
+</span><span class='line'>PreferredAuthentications publickey
+</span><span class='line'>IdentityFile ~/.ssh/id_rsa_b
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>然后在你的git仓库的远程地址中，将对应的a.github.com和b.github.com替换原来的github.com，参考下面的变化：
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>git clone </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git@a.githuc.com:sagerblog/sagerblog.github.com
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My first Octopress test page]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/23/first/"/>
+    <updated>2012-12-23T22:28:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/23/first</id>
+    <content type="html"><![CDATA[<p><a href='http://sagerxiao.github.com/presentations/'>Sager's HTML5 presentations</a></p>
+
+<p>``` ruby Discover if a number is prime http://www.noulakaz.net/weblog/2007/03/18/a-regular-expression-to-check-for-prime-numbers/ Source Article
+class Fixnum
+  def prime?</p>
+
+<pre><code>  ('1' * self) !~ /^1?$|^(11+?)\1+$/
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p><code>
+$ sudo make me a sandwich
+</code>
+<div><script src='https://gist.github.com/1059334.js?file=svg_bullets.rb'></script>
+<noscript><pre><code>require 'sass'
+
+module Sass::Script::Functions
+  def svg_circle(radius, color, circle_type)
+    img = if circle_type.value == &quot;disc&quot;
+      %Q{&lt;circle cx=&quot;#{radius.value}&quot; cy=&quot;#{radius.value}&quot; r=&quot;#{radius.value}&quot;
+                          stroke-width=&quot;0&quot; fill=&quot;#{color}&quot;/&gt;}
+    else
+      %Q{&lt;circle cx=&quot;#{radius.value}&quot; cy=&quot;#{radius.value}&quot; r=&quot;#{radius.value}&quot;
+                          stroke=&quot;#{color}&quot; stroke-width=&quot;1&quot; fill=&quot;white&quot;/&gt;}
+    end
+    inline_image_string(svg_circle_envelope(img).gsub(/  +/, ' '), 'image/svg+xml')
+  end
+  private
+  def svg_circle_envelope(content)
+    %Q{&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; &lt;svg version=&quot;1.1&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;#{content}&lt;/svg&gt;}
+  end
+end
+</code></pre></noscript></div>
+
+``` python Login to 163 email http://mail.163.com 163邮件系统</p>
+
+<p>class Login163:
+   #伪装browser</p>
+
+<pre><code>header = {'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6)\
+    Gecko/20091201 Firefox/3.5.6'}
+username = ''
+passwd = ''
+cookie = None #cookie对象
+cookiefile = './cookies.dat' #cookie临时存放地
+user = ''
+
+def __init__(self,username,passwd):
+    self.username = username
+    self.passwd = passwd
+    #cookie设置
+    self.cookie = cookielib.LWPCookieJar() #自定义cookie存放
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookie))
+    urllib2.install_opener(opener)
+</code></pre>
+
+<p>```</p>
+
+<!-- more -->
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Javascript Array Syntax </span><a href='http://j.mp/pPUUmW'>MDN Documentation </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">arr1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">arrayLength</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">arr2</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">element0</span><span class="p">,</span> <span class="nx">element1</span><span class="p">,</span> <span class="p">...,</span> <span class="nx">elementN</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>We made 1 million dollars  this year</p>
+
+<p>rake new_post["My New Post"]</p>
+
+<p>edit my-new-post.markdown with text editor</p>
+
+<p>jekyll markup</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Preview&amp;Deploy  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake preview
+</span><span class='line'>rake generate
+</span><span class='line'>rake deploy
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Commit source  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git add .
+</span><span class='line'>git ci -am <span class="s1">&#39;your message&#39;</span>
+</span><span class='line'>git push origin <span class="nb">source</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><img src="http://placekitten.com/890/280">
+Bacon ipsum dolor sit amet exercitation ball tip consectetur tempor. Biltong exercitation aliqua, ribeye consequat veniam consectetur.</p>
+
+<p><img class="left" src="http://placekitten.com/320/250" title="Place Kitten #2" >
+Aliquip nulla do tempor, ball tip dolore anim esse strip steak nisi nostrud. Tri-tip mollit deserunt ut duis, commodo brisket short loin est hamburger sunt consequat rump meatloaf. Exercitation enim aliqua tempor dolore. Non eu venison, officia boudin tri-tip enim beef ribs flank cupidatat in aute. Tail voluptate fugiat aute flank, venison sint.</p>
+
+<p><img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #3" >
+Brisket quis velit bresaola. Pork loin pork chop beef duis. Short loin fugiat officia short ribs magna. Ullamco eu proident jerky, fugiat chuck nostrud ham rump meatloaf eiusmod adipisicing. Qui et reprehenderit, magna biltong consequat short ribs pancetta. Tail tenderloin sausage, hamburger corned beef drumstick ad. Eu labore enim velit.</p>
+
+<p><img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #4" alt="An image of a very cute kitten">
+Filler text courtesy of Bacon Ipsum, Images courtesy of Place Kitten.</p>
+
+<p><blockquote><p>Last night I lay in bed looking up at the stars in the sky and I thought to myself, where the heck is the ceiling.</p></blockquote></p>
+
+<p>那么一个极客眼中的博客应该具备哪些要素？</p>
+
+<p><strong>1. 基于文本的编辑</strong></p>
+
+<p>作为极客，你必须很在意 Vim, Emacs 之流，你应该鄙视一切在 Office，Web 里的文字工作，Office 之流很方便使用，但是实在没有什么效率。即便在我们这个行业里，很多人至今没有弄清楚方便不等于高效这个道理。所以我个人只认同使用 Vim 方式处理任何文本工作，包括代码和博客。</p>
+
+<p><strong>2. 方便的书写和阅读格式</strong></p>
+
+<p>假设你承认上述第一点的理念，那么我们还是在写博客，仍然需要格式化的文字使得文字本身在网络上更富表现力，方便读者阅读。但是 html 是一种很冗余的格式存在，既不方便书写也不方便对编辑的源码直接阅读。同时纯文本的格式又走上了另一个极端，书写和阅读基本没有任何代价，坏处在于纯文本几乎又没有任何表现力，除了可以分出段落，它不能粗体，不能斜体，不能更改字号，不能列表。所以结论是：我们需要一种介于 html 和纯文本之间的格式来书写博客，它有不那么大的书写和阅读的成本，又兼顾一定的文字表现力。答案就是 <a href="http://daringfireball.net/projects/markdown/">Markdown</a>，再送一份红利就是在线的 <a href="http://www.ctrlshift.net/project/markdowneditor/">Markdown Editor</a>。</p>
+
+<p><strong>3. 灵活的备份和恢复</strong></p>
+
+<p>这是一条足以放弃 WordPress 的重要理由。我们无非是在码字而已，没有理由引入数据库，基于文本的保存是最安全的保存，它便于检索(grep)，容易导入，导出，不依赖于任何第三方软件或者操作系统。几百年后，这篇文档仍然可以被那时的计算机打开，这很重要，好比我们今天仍然有机会看到前人的青铜器，但是我们的后人只能从图片上看看今天的各类一次性制品。如果要求更高一些，我们还希望有类似管理代码的方式来管理我们的博客，同样是文本，Version Control System 不应该是代码的专有权利。中央服务器也可以保证在任何地方，任何时候检出，更新，提交你的博客，并且也不妨碍除你以外的人这么做。</p>
+
+<p><strong>4. 基于命令行的操作方式</strong></p>
+
+<p>极客的重要特征是远离 Windows，所以我们甚至应该幻想一个 Windows 不友好的方式来写博客。它应该尽量基于命令行，在 Linux 系统上运行良好，羞啥那些 Windows 上的普通青年和 Mac 上的文艺青年，这不是说我很大度的表示我就是2B青年，只是我实在不愿意诸君承担2B青年的包袱，只好自己大度的承担罢了。</p>
+
+<p><strong>5. 支持代码片段的显示</strong></p>
+
+<p>偶尔想秀个小代码也是装2的内在诉求和外在表现之一，所以我们的博客应该是可以这样子的：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Code Snips to test code blocks </span><a href='http://www.google.com'>link test</a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">TestCode</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">pass</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">testCode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&#39;hello world!&#39;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>6. 最后的最后，不缩水的博客</strong></p>
+
+<p>好处不能都被你这个2B青年占完了不是吗？你要这个要那个，都满足你了，末了扔给你一个缩水的博客，你不由自主的和那些个不入你法眼的新浪博客，不讨巧的 WordPress 做比较了，于是你又开始不满意了。好吧，我们折中一下，RSS 导出不能少，分享到 Facebook，Twitter，甚至于新浪微博也不能落下，还要能访客留言，搜索过往，提示最近的博客，标注 tag。于是是除了你那些个蛋疼的特殊癖好，别人有的也全都要满足。。。</p>
+
+<h1>Mou</h1>
+
+<pre><code>1. 真的没什么
+2. 其实有意思的
+</code></pre>
+
+<p><strong><a href="http://mouapp.com/">Mou</a></strong>， the missing <code>Markdown</code> editor for <em><code>web developers</code></em>.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Python's print function </span><a href='http://sagerblog.github.com'>Test code</a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">print</span> <span class="s">&#39;Hello octopress&#39;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+```
+def main():</p>
+
+<pre><code>print 'Hello octopress'
+</code></pre>
+
+<p><code>
+</code>bash Backup system configuration files
+echo $SHELL
+tar cvfz /home/sager/bakup/etc.tar.gz /etc/ *
+```</p>
+
+<pre><code>echo $SHELL
+tar cvfz /home/sager/bakup/etc.tar.gz /etc/ *
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

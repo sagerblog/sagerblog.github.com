@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cvs | SagerXiao's Blog]]></title>
+  <link href="http://sagerblog.github.com/blog/categories/cvs/atom.xml" rel="self"/>
+  <link href="http://sagerblog.github.com/"/>
+  <updated>2012-12-27T10:52:31+08:00</updated>
+  <id>http://sagerblog.github.com/</id>
+  <author>
+    <name><![CDATA[Sager Xiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用git stash暂存修改]]></title>
+    <link href="http://sagerblog.github.com/blog/2012/12/27/git-stash/"/>
+    <updated>2012-12-27T10:40:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2012/12/27/git-stash</id>
+    <content type="html"><![CDATA[<p>当你需要在不同的branch之间切换的时候，可以把当前工作区的修改内容加入到暂存堆栈，也可以随时取出</p>
+
+<h3>git stash</h3>
+
+<p>将当前的修改保存在暂存堆栈</p>
+
+<h3>git stash pop</h3>
+
+<p>将最新暂存堆栈的内容恢复到工作区</p>
+
+<!-- more -->
+
+
+<h3>git stash pop {num}</h3>
+
+<p>将指定序号的暂存堆栈的内容恢复到工作区</p>
+
+<h3>git stash list</h3>
+
+<p>查看当前暂存堆栈中有哪些内容</p>
+
+<h3>git stash clear</h3>
+
+<p>清空暂存堆栈的内容</p>
+]]></content>
+  </entry>
+  
+</feed>
