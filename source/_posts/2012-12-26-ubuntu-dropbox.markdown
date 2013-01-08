@@ -11,7 +11,7 @@ categories: [linux, dropbox, it]
 于是我就马不停蹄地下载了Dropbox的安装包然后装到Ubuntu上，装完一打开，弹出这么个提示：“Trouble connecting to Dropbox server.Maybe your internet connection is down,or you need to set your http_proxy environment variable”，主要意思就说无法连接上dropbox的服务器。
 
 然后我把hosts改了，问题依旧…，只有祭出google大神了
-
+<!--more-->
 原来装了那个deb包还不算装完，第一次启动时还要下载一个.tar.gz的包，明显这个包的地址在墙外了。
 
 所以需要到这个地址 <http://www.getdropbox.com/download?plat=lnx.x86> 下载这个.tar.gz包，当然要先爬墙。（我把这个文件传到了华为网盘 <http://dl.vmall.com/c0sgq6m4m6> ，无法爬墙的同学如果信得过我的话可以下载）
