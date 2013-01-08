@@ -4,7 +4,7 @@
   <title><![CDATA[Category: shell | SagerXiao's Blog]]></title>
   <link href="http://sagerblog.github.com/blog/categories/shell/atom.xml" rel="self"/>
   <link href="http://sagerblog.github.com/"/>
-  <updated>2013-01-08T10:46:14+08:00</updated>
+  <updated>2013-01-08T16:26:22+08:00</updated>
   <id>http://sagerblog.github.com/</id>
   <author>
     <name><![CDATA[Sager Xiao]]></name>
@@ -12,6 +12,246 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[最有用的Linux命令列表]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/08/most-useful-linux-shell/"/>
+    <updated>2013-01-08T14:45:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/08/most-useful-linux-shell</id>
+    <content type="html"><![CDATA[<h3>$ sudo !!</h3>
+
+<p><strong><em>Run the last command as root</em></strong></p>
+
+<p>Useful when you forget to use sudo for a command. "!!" grabs the last run command.</p>
+
+<hr />
+
+<h3>$ python -m SimpleHTTPServer</h3>
+
+<p><strong><em>Serve current directory tree at http://localhost:8000/</em></strong></p>
+
+<hr />
+
+<h3>$ :w !sodu tee %</h3>
+
+<p><strong><em>Save a file you edited in vim without the needed permissions</em></strong></p>
+
+<p>I often forget to sudo before editing a file I don't have write permissions on. When you come to save that file and get the infamous "E212: Can't open file for writing", just issue that vim command in order to save the file without the need to save it to a temp file and then copy it back again.</p>
+
+<!--more-->
+
+
+<hr />
+
+<h3>$ cd -</h3>
+
+<p><strong><em>change to the previous working directory</em></strong></p>
+
+<hr />
+
+<h3>$ ^foo ^bar</h3>
+
+<p><strong><em>Runs previous command but replacing</em></strong></p>
+
+<p>Really useful for when you have a typo in a previous command. Also, arguments default to empty so if you accidentally run:
+<code>
+echo "no typozs"
+</code>
+you can correct it with
+```
+^z</p>
+
+<h2>```</h2>
+
+<h3>$ mtr google.com</h3>
+
+<p><strong><em>mtr, better than traceroute and ping combined</em></strong></p>
+
+<p>mtr combines the functionality of the traceroute and ping programs in a single network diagnostic tool.
+As mtr starts, it investigates the network connection between the host mtr runs on and HOSTNAME. by sending packets with purposly low TTLs. It continues to send packets with low TTL, noting the response time of the intervening routers. This allows mtr to print the response percentage and response times of the internet route to HOSTNAME. A sudden increase in packetloss or response time is often an indication of a bad (or simply over?loaded) link.</p>
+
+<hr />
+
+<h3>$ ctrl-x e</h3>
+
+<p><strong><em>Rapidly invoke an editor to write a long, complex, or tricky command</em></strong></p>
+
+<p>Next time you are using your shell, try typing ctrl-x e (that is holding control key press x and then e). The shell will take what you've written on the command line thus far and paste it into the editor specified by $EDITOR. Then you can edit at leisure using all the powerful macros and commands of vi, emacs, nano, or whatever.</p>
+
+<hr />
+
+<h3>$ &lt;space>command</h3>
+
+<p><strong><em>Execute a command without saving it in the history</em></strong></p>
+
+<p>Prepending one or more spaces to your command won't be saved in history.
+Useful for pr0n or passwords on the commandline.
+Tested on BASH.</p>
+
+<hr />
+
+<h3>$ file.txt</h3>
+
+<p><strong><em>Empty a file</em></strong></p>
+
+<p>For when you want to flush all content from a file without removing it (hat-tip to Marc Kilgus).</p>
+
+<hr />
+
+<h3>$ $ssh-copy-id user@host</h3>
+
+<p><strong><em>Copy ssh keys to user@host to enable password-less ssh logins.</em></strong></p>
+
+<hr />
+
+<h3>$ reset</h3>
+
+<p><strong><em>Salvage a borked terminal</em></strong></p>
+
+<p>If you bork your terminal by sending binary data to STDOUT or similar, you can get your terminal back using this command rather than killing and restarting the session. Note that you often won't be able to see the characters as you type them.</p>
+
+<hr />
+
+<h3>$ ffmpeg -f X11grab -s wxga -r 25 -i :0.0 -sameq /tmp/out.mpg</h3>
+
+<p><strong><em>Capture video of a linux desktop</em></strong></p>
+
+<hr />
+
+<h3>$ 'ALT+.' or '&lt;ESC> .'</h3>
+
+<p><strong><em>Place the argument of the most recent command on the shell</em></strong></p>
+
+<p>When typing out long arguments, such as:
+<code>
+cp file.txt /var/www/wp-content/uploads/2009/03/
+</code>
+You can put that argument on your command line by holding down the ALT key and pressing the period '.' or by pressing <ESC> then the period '.'. For example:
+<code>
+cd 'ALT+.'
+</code>
+would put '/var/www/wp-content/uploads/2009/03/ as my argument. Keeping pressing 'ALT+.' to cycle through arguments of your commands starting from most recent to oldest. This can save a ton of typing.</p>
+
+<hr />
+
+<h3>$ mount | column -t</h3>
+
+<p><strong><em>currently mounted filesystems in nice layout</em></strong></p>
+
+<p>Particularly useful if you're mounting different drives, using the following command will allow you to see all the filesystems currently mounted on your computer and their respective specs with the added benefit of nice formatting.</p>
+
+<hr />
+
+<h3>$ ssh -N -L2001:localhost:80 somemachine</h3>
+
+<p><strong><em>start a tunnel from some machine's port 80 to your local post 2001</em></strong></p>
+
+<p>now you can acces the website by going to http://localhost:2001/</p>
+
+<hr />
+
+<h3>$ echo "ls -l" | at midnight</h3>
+
+<p><strong><em>Execute a command at a given time</em></strong></p>
+
+<p>This is an alternative to cron which allows a one-off task to be scheduled for a certain time.</p>
+
+<hr />
+
+<h3>$ dig +short text <keyword>.wp.dg.cx</h3>
+
+<p><strong><em>Query Wikipedia via console over DNS</em></strong></p>
+
+<p>Query Wikipedia by issuing a DNS query for a TXT record. The TXT record will also include a short URL to the complete corresponding Wikipedia entry.You can also write a little shell script like:
+```bash
+$ cat wikisole.sh</p>
+
+<h1>!/bin/sh</h1>
+
+<p>dig +short txt ${1}.wp.dg.cx
+<code>
+and run it like
+</code>
+$ ./wikisole.sh unix
+```
+were your first option ($1) will be used as search term.</p>
+
+<hr />
+
+<h3>$ netstat -tlnp</h3>
+
+<p><strong><em>Lists all listening ports together with the PID of the associated process</em></strong></p>
+
+<p>The PID will only be printed if you're holding a root equivalent ID.</p>
+
+<hr />
+
+<h3>$ dd if=/dev/dsp | ssh -c arcfour -C username@host dd of=/dev/dsp</h3>
+
+<p><strong><em>output your microphone to a remote computer's speaker</em></strong></p>
+
+<p>This will output the sound from your microphone port to the ssh target computer's speaker port. The sound quality is very bad, so you will hear a lot of hissing.</p>
+
+<hr />
+
+<h3>$ curl -u user:pass -d status="Tweeting from the shell" http://twitter.com/statuses/update.xml</h3>
+
+<p><strong><em>Update twitter via curl</em></strong></p>
+
+<hr />
+
+<h3>$ !!:gs/foo/bar</h3>
+
+<p><strong><em>Runs previous command replacing foo by bar every time that foo appears</em></strong></p>
+
+<p>Very useful for rerunning a long command changing some arguments globally.
+As opposed to ^foo ^bar, which only replaces the first occurrence of foo, this one changes every occurrence.</p>
+
+<hr />
+
+<h3>$ mount -t tmpfs tmps /mnt -o size=1024m</h3>
+
+<p><strong><em>Mount a temporary ram partition</em></strong></p>
+
+<p>Makes a partition in ram which is useful if you need a temporary working space as read/write access is fast.</p>
+
+<p>Be aware that anything saved in this partition will be gone after your computer is turned off.</p>
+
+<hr />
+
+<h3>$ man ascii</h3>
+
+<p><strong><em>Quick access to the ascii table.</em></strong></p>
+
+<hr />
+
+<h3>$ sshfs name@server:/path/to/folder /path/to/mound/point</h3>
+
+<p><strong><em>Mount folder/filesystem through SSH</em></strong></p>
+
+<p>Install SSHFS from http://fuse.sourceforge.net/sshfs.html</p>
+
+<p>Will allow you to mount a folder security over a network.</p>
+
+<hr />
+
+<h3>$ curl ifconfig.me</h3>
+
+<p><strong><em>Get your external IP address</em></strong></p>
+
+<p>curl ifconfig.me/ip -> IP Adress</p>
+
+<p>curl ifconfig.me/host -> Remote Host</p>
+
+<p>curl ifconfig.me/ua ->User Agent</p>
+
+<p>curl ifconfig.me/port -> Port</p>
+
+<p>curl ifconfig.me/all -> All</p>
+
+<p>thanks to <a href="http://ifconfig.me/">ifconfig.me</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[经典实用的Shell命令]]></title>

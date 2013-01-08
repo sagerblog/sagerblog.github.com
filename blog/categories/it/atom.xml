@@ -4,7 +4,7 @@
   <title><![CDATA[Category: it | SagerXiao's Blog]]></title>
   <link href="http://sagerblog.github.com/blog/categories/it/atom.xml" rel="self"/>
   <link href="http://sagerblog.github.com/"/>
-  <updated>2013-01-08T10:46:14+08:00</updated>
+  <updated>2013-01-08T16:26:22+08:00</updated>
   <id>http://sagerblog.github.com/</id>
   <author>
     <name><![CDATA[Sager Xiao]]></name>
@@ -23,6 +23,9 @@
 <p>于是我就马不停蹄地下载了Dropbox的安装包然后装到Ubuntu上，装完一打开，弹出这么个提示：“Trouble connecting to Dropbox server.Maybe your internet connection is down,or you need to set your http_proxy environment variable”，主要意思就说无法连接上dropbox的服务器。</p>
 
 <p>然后我把hosts改了，问题依旧…，只有祭出google大神了</p>
+
+<!--more-->
+
 
 <p>原来装了那个deb包还不算装完，第一次启动时还要下载一个.tar.gz的包，明显这个包的地址在墙外了。</p>
 
