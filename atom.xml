@@ -4,7 +4,7 @@
   <title><![CDATA[SagerXiao's Blog]]></title>
   <link href="http://sagerblog.github.com/atom.xml" rel="self"/>
   <link href="http://sagerblog.github.com/"/>
-  <updated>2012-12-27T10:52:31+08:00</updated>
+  <updated>2013-01-08T10:46:14+08:00</updated>
   <id>http://sagerblog.github.com/</id>
   <author>
     <name><![CDATA[Sager Xiao]]></name>
@@ -12,6 +12,52 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[git分支的使用]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/08/git-branch/"/>
+    <updated>2013-01-08T10:32:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/08/git-branch</id>
+    <content type="html"><![CDATA[<h3>git checkout -b sager-profile</h3>
+
+<p>创建本地分支</p>
+
+<h3>git checkout sager-profile</h3>
+
+<p>切换分支到sager-profile</p>
+
+<!--more-->
+
+
+<h3>git checkout master</h3>
+
+<p>切换分支回master</p>
+
+<h3>git push origin sager-profile:sager-profile</h3>
+
+<p>推送本地分支sager-profile到远程</p>
+
+<h3>git branch</h3>
+
+<p>查看本地分支</p>
+
+<h3>git branch -r</h3>
+
+<p>查看远程分支</p>
+
+<h3>git branch -d sager-profile</h3>
+
+<p>删除本地分支</p>
+
+<h3>git push origin :sager-profile</h3>
+
+<p>删除远程分支,语法同推送分支到远程， 只是将一个空分支推送到远程指定分支，也就是删掉远程分支</p>
+
+<h3>git branch -r -d origin/sager-profile</h3>
+
+<p>如果上面的语句执行失败，可以使用这个删除远程分支</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[使用git stash暂存修改]]></title>
