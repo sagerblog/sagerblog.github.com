@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux配置Nginx+uWsgi环境 - SagerXiao's Blog</title>
+  <meta name="author" content="Sager Xiao">
+
+  
+  <meta name="description" content="转Python后碰到的最大的问题就是服务器配置，产品环境最终还是需要用到Nginx+uWsgi，折腾过好久，把操作记录放在这里，方便查询 我的环境：RHEL6，python2.6.6，Nginx1.2.6，uWsgi1.4.4（都是从官方网站下载的最新版本） 1.环境准备 先更新系统， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sagerblog.github.com/blog/2013/01/15/linux-nginx-uwsgi/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="SagerXiao's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">SagerXiao's Blog</a></h1>
+  
+    <h2>Restart of an old programmer</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:sagerblog.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Linux配置Nginx+uWsgi环境</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-15T12:49:00+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>转Python后碰到的最大的问题就是服务器配置，产品环境最终还是需要用到Nginx+uWsgi，折腾过好久，把操作记录放在这里，方便查询</p>
+
+<p>我的环境：RHEL6，python2.6.6，Nginx1.2.6，uWsgi1.4.4（都是从官方网站下载的最新版本）</p>
+
+<h3>1.环境准备</h3>
+
+<p>先更新系统，并安装编译环境等等。</p>
+
+<figure class='code'><figcaption><span>Prepare environment</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>yum update
+</span><span class='line'>yum install glib2-devel openssl-devel pcre-devel bzip2-devel gzip-devel<span class="se">\</span>
+</span><span class='line'>    python python-devel libxml2 libxml2-devel python-setuptools zlib-devel<span class="se">\</span>
+</span><span class='line'>    wget pcre pcre-devel sudo gcc make autoconf automake
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2.编译安装Nginx</h3>
+
+<p>先到<a href="http://nginx.org/en/download.html">Nginx官网</a>下载最新稳定版本的Nginx1.2.6，编译安装</p>
+
+<!--more-->
+
+
+<figure class='code'><figcaption><span>Compile and install nginx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /usr/local/src
+</span><span class='line'>wget http://nginx.org/download/nginx-1.2.6.tar.gz
+</span><span class='line'>tar -zxvf nginx-1.2.6.tar.gz
+</span><span class='line'><span class="nb">cd </span>nginx-1.2.6
+</span><span class='line'>./configure <span class="se">\</span>
+</span><span class='line'>    --user<span class="o">=</span>nginx <span class="se">\</span>
+</span><span class='line'>    --group<span class="o">=</span>nginx <span class="se">\</span>
+</span><span class='line'>    --prefix<span class="o">=</span>/usr/share <span class="se">\</span>
+</span><span class='line'>    --sbin-path<span class="o">=</span>/usr/sbin/nginx <span class="se">\</span>
+</span><span class='line'>    --conf-path<span class="o">=</span>/etc/nginx/nginx.conf <span class="se">\</span>
+</span><span class='line'>    --error-log-path<span class="o">=</span>/var/log/nginx/error.log <span class="se">\</span>
+</span><span class='line'>    --http-log-path<span class="o">=</span>/var/log/nginx/access.log <span class="se">\</span>
+</span><span class='line'>    --pid-path<span class="o">=</span>/var/log/run/nginx.pid <span class="se">\</span>
+</span><span class='line'>    --lock-path<span class="o">=</span>/var/log/lock/subsys/nginx <span class="se">\</span>
+</span><span class='line'>    --with-http_ssl_module <span class="se">\</span>
+</span><span class='line'>    --with-http_realip_module <span class="se">\</span>
+</span><span class='line'>    --with-http_addition_module <span class="se">\</span>
+</span><span class='line'>    --with-http_sub_module <span class="se">\</span>
+</span><span class='line'>    --with-http_dav_module <span class="se">\</span>
+</span><span class='line'>    --with-http_flv_module <span class="se">\</span>
+</span><span class='line'>    --with-http_gzip_static_module <span class="se">\</span>
+</span><span class='line'>    --with-http_stub_status_module <span class="se">\</span>
+</span><span class='line'>    --with-mail <span class="se">\</span>
+</span><span class='line'>    --with-mail_ssl_module
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>更多的编译选项参考：<a href="http://wiki.nginx.org/NginxInstallOptions">http://wiki.nginx.org/NginxInstallOptions</a></p>
+
+<h3>3.Nginx环境配置</h3>
+
+<h4>3.1为Nginx建立用户</h4>
+
+<figure class='code'><figcaption><span>add user nginx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>useradd -c <span class="s2">&quot;Nginx user&quot;</span> -s /bin/false -r -d /var/lib/nginx nginx
+</span><span class='line'>adduser --system --no-create-home  nginx
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3.2运行Nginx</h4>
+
+<figure class='code'><figcaption><span>run nginx</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/usr/sbin/nginx
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3.3配置文件</h4>
+
+<figure class='code'><figcaption><span>nginx conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/etc/nginx/nginx.conf
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;NGINX_CONF_FILE=/etc/nginx/nginx.conf&quot;</span> &gt; /etc/sysconfig/nginx
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4.编译安装uWsgi</h3>
+
+<p>进入uWsgi的<a href="http://projects.unbit.it/uwsgi/">官方网站</a>，下载它的当前稳定版本，我这里下载的是1.4.4版本。</p>
+
+<figure class='code'><figcaption><span>Compiler and install uWsgi</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /usr/local/src
+</span><span class='line'>wget http://projects.unbit.it/downloads/uwsgi-1.4.4.tar.gz
+</span><span class='line'>tar -zxvf uwsgi-1.4.4.tar.gz
+</span><span class='line'>mv uwsgi-1.4.4 uwsgi
+</span><span class='line'><span class="nb">cd </span>uwsgi
+</span><span class='line'>python setup.py build
+</span><span class='line'>make
+</span><span class='line'>mv uwsgi /usr/bin  <span class="c">#move execuable file to /usr/bin</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5.配置uWsgi</h3>
+
+<p>详细配置方式可以参考官网上的配置说明：<a href="http://projects.unbit.it/uwsgi/wiki/Quickstart">http://projects.unbit.it/uwsgi/wiki/Quickstart</a>
+我以项目中的两个模块配置文件示例如下（web模块和api模块，分别走两个不同的端口）</p>
+
+<figure class='code'><figcaption><span>web.ini config for uwsgi</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>uwsgi<span class="o">]</span>
+</span><span class='line'><span class="nv">autoload</span> <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nv">master</span> <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nv">uid</span><span class="o">=</span>sager
+</span><span class='line'><span class="nv">gid</span><span class="o">=</span>sager
+</span><span class='line'><span class="nv">workers</span> <span class="o">=</span> 2
+</span><span class='line'><span class="nv">socket</span> <span class="o">=</span> 127.0.0.1:8081
+</span><span class='line'><span class="nv">module</span> <span class="o">=</span> web-uwsgi
+</span><span class='line'><span class="nv">chdir</span> <span class="o">=</span> /home/sager/project
+</span><span class='line'><span class="nv">pythonpath</span> <span class="o">=</span> /opt/pyenv
+</span><span class='line'><span class="nv">virtualenv</span> <span class="o">=</span> /opt/pyenv
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>api.ini config for uwsgi</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>uwsgi<span class="o">]</span>
+</span><span class='line'><span class="nv">autoload</span> <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nv">uid</span><span class="o">=</span>sager
+</span><span class='line'><span class="nv">gid</span><span class="o">=</span>sager
+</span><span class='line'><span class="nv">master</span> <span class="o">=</span> <span class="nb">true</span>
+</span><span class='line'><span class="nv">workers</span> <span class="o">=</span>2
+</span><span class='line'><span class="nv">socket</span> <span class="o">=</span> 127.0.0.1:8080
+</span><span class='line'><span class="nv">module</span> <span class="o">=</span> api-uwsgi
+</span><span class='line'><span class="nv">chdir</span> <span class="o">=</span> /home/sager/project
+</span><span class='line'><span class="nv">pythonpath</span> <span class="o">=</span> /opt/pyenv
+</span><span class='line'><span class="nv">virtualenv</span> <span class="o">=</span> /opt/pyenv
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>6.启动Nginx和uWsgi服务</h3>
+
+<figure class='code'><figcaption><span>start service</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>nginx
+</span><span class='line'>uwsgi -i api.ini
+</span><span class='line'>uwsgi -i web.ini
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>7.配置Nginx支持uWsgi</h3>
+
+<p>简化的nginx.conf文件，增加一条include内容，见最后一行</p>
+
+<figure class='code'><figcaption><span>nginx.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>user  nginx;
+</span><span class='line'>worker_processes  1;
+</span><span class='line'>events <span class="o">{</span>
+</span><span class='line'>    worker_connections  1024;
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>http <span class="o">{</span>
+</span><span class='line'>    include       mime.types;
+</span><span class='line'>    default_type  application/octet-stream;
+</span><span class='line'>    sendfile        on;
+</span><span class='line'>    keepalive_timeout  65;
+</span><span class='line'>    include /etc/nginx/sites-enabled/*;
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后在/etc/nginx/sites-enabled目录中增加单个的server配置内容，参考如下</p>
+
+<figure class='code'><figcaption><span>sager-project.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>server <span class="o">{</span>
+</span><span class='line'>    listen 80;
+</span><span class='line'>    server_name localhost;
+</span><span class='line'>    location /api/ <span class="o">{</span>
+</span><span class='line'>        rewrite ^/api/<span class="o">(</span>.*<span class="o">)</span><span class="nv">$ </span>/<span class="nv">$1</span> <span class="nb">break</span>;
+</span><span class='line'>        include uwsgi_params;
+</span><span class='line'>        uwsgi_pass 127.0.0.1:8080;
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    location / <span class="o">{</span>
+</span><span class='line'>        include uwsgi_params;
+</span><span class='line'>        uwsgi_pass 127.0.0.1:8081;
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重启服务后，通过http://localhost即可访问项目主页了，web的请求会直接转发给8081端口，而http://localhost/api的请求则会转发到8080端口</p>
+
+<p>至此，我们的配置完成了，可以参考下一篇文章，将nginx和uwsgi配置为系统服务，并开机自动启动</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Sager Xiao</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-15T12:49:00+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/config/'>config</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/nginx/'>nginx</a>, <a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/uwsgi/'>uwsgi</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sagerblog.github.com/blog/2013/01/15/linux-nginx-uwsgi/" data-via="" data-counturl="http://sagerblog.github.com/blog/2013/01/15/linux-nginx-uwsgi/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/08/most-useful-linux-shell/" title="Previous Post: 最有用的Linux命令列表">&laquo; 最有用的Linux命令列表</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/15/linux-service-auto-startup/" title="Next Post: 配置Nginx和uWsig服务开机自动启动">配置Nginx和uWsig服务开机自动启动 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/01/15/linux-service-auto-startup/">配置Nginx和uWsig服务开机自动启动</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/15/linux-nginx-uwsgi/">Linux配置Nginx+uWsgi环境</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/08/most-useful-linux-shell/">最有用的Linux命令列表</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/08/git-branch/">git分支的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/27/git-stash/">使用git stash暂存修改</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/sagerxiao">@sagerxiao</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'sagerxiao',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/sagerxiao?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Sager Xiao -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sagerblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sagerblog.github.com/blog/2013/01/15/linux-nginx-uwsgi/';
+        var disqus_url = 'http://sagerblog.github.com/blog/2013/01/15/linux-nginx-uwsgi/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

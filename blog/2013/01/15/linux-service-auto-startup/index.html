@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>SagerXiao's Blog</title>
+  <title>配置Nginx和uWsig服务开机自动启动 - SagerXiao's Blog</title>
   <meta name="author" content="Sager Xiao">
 
   
@@ -36,7 +36,7 @@ vi /etc/init.d/nginx 将以下内容写到该脚本中 auto start scripts 1
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sagerblog.github.com/">
+  <link rel="canonical" href="http://sagerblog.github.com/blog/2013/01/15/linux-service-auto-startup/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,15 +81,12 @@ vi /etc/init.d/nginx 将以下内容写到该脚本中 auto start scripts 1
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/01/15/linux-service-auto-startup/">配置Nginx和uWsig服务开机自动启动</a></h1>
+      <h1 class="entry-title">配置Nginx和uWsig服务开机自动启动</h1>
     
     
       <p class="meta">
@@ -112,7 +109,7 @@ vi /etc/init.d/nginx 将以下内容写到该脚本中 auto start scripts 1
   </header>
 
 
-  <div class="entry-content"><h3>1.配置Nginx服务开机自动启动</h3>
+<div class="entry-content"><h3>1.配置Nginx服务开机自动启动</h3>
 
 <h4>1.1创建 Nginx 开机启动脚本</h4>
 
@@ -345,84 +342,16 @@ vi /etc/init.d/nginx 将以下内容写到该脚本中 auto start scripts 1
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/15/linux-nginx-uwsgi/">Linux配置Nginx+uWsgi环境</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Sager Xiao</span></span>
 
-<time datetime="2013-01-15T12:49:00+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>转Python后碰到的最大的问题就是服务器配置，产品环境最终还是需要用到Nginx+uWsgi，折腾过好久，把操作记录放在这里，方便查询</p>
-
-<p>我的环境：RHEL6，python2.6.6，Nginx1.2.6，uWsgi1.4.4（都是从官方网站下载的最新版本）</p>
-
-<h3>1.环境准备</h3>
-
-<p>先更新系统，并安装编译环境等等。</p>
-
-<figure class='code'><figcaption><span>Prepare environment</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>yum update
-</span><span class='line'>yum install glib2-devel openssl-devel pcre-devel bzip2-devel gzip-devel<span class="se">\</span>
-</span><span class='line'>    python python-devel libxml2 libxml2-devel python-setuptools zlib-devel<span class="se">\</span>
-</span><span class='line'>    wget pcre pcre-devel sudo gcc make autoconf automake
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>2.编译安装Nginx</h3>
-
-<p>先到<a href="http://nginx.org/en/download.html">Nginx官网</a>下载最新稳定版本的Nginx1.2.6，编译安装</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/15/linux-nginx-uwsgi/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/08/most-useful-linux-shell/">最有用的Linux命令列表</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -434,395 +363,48 @@ vi /etc/init.d/nginx 将以下内容写到该脚本中 auto start scripts 1
   
 
 
-<time datetime="2013-01-08T14:45:00+08:00" pubdate data-updated="true">Jan 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>$ sudo !!</h3>
-
-<p><strong><em>Run the last command as root</em></strong></p>
-
-<p>Useful when you forget to use sudo for a command. &#8220;!!&#8221; grabs the last run command.</p>
-
-<hr />
-
-<h3>$ python -m SimpleHTTPServer</h3>
-
-<p><strong><em>Serve current directory tree at http://localhost:8000/</em></strong></p>
-
-<hr />
-
-<h3>$ :w !sodu tee %</h3>
-
-<p><strong><em>Save a file you edited in vim without the needed permissions</em></strong></p>
-
-<p>I often forget to sudo before editing a file I don&#8217;t have write permissions on. When you come to save that file and get the infamous &#8220;E212: Can&#8217;t open file for writing&#8221;, just issue that vim command in order to save the file without the need to save it to a temp file and then copy it back again.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/08/most-useful-linux-shell/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2013-01-15T14:53:00+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/08/git-branch/">Git分支的使用</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/auto-startup/'>auto startup</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/nginx/'>nginx</a>, <a class='category' href='/blog/categories/service/'>service</a>, <a class='category' href='/blog/categories/uwsgi/'>uwsgi</a>
+  
+</span>
 
 
-<time datetime="2013-01-08T10:32:00+08:00" pubdate data-updated="true">Jan 8<span>th</span>, 2013</time>
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><h3>git checkout -b sager-profile</h3>
-
-<p>创建本地分支</p>
-
-<h3>git checkout sager-profile</h3>
-
-<p>切换分支到sager-profile</p>
-
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sagerblog.github.com/blog/2013/01/15/linux-service-auto-startup/" data-via="" data-counturl="http://sagerblog.github.com/blog/2013/01/15/linux-service-auto-startup/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/08/git-branch/">阅读全文 &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/27/git-stash/">使用git Stash暂存修改</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-27T10:40:00+08:00" pubdate data-updated="true">Dec 27<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>当你需要在不同的branch之间切换的时候，可以把当前工作区的修改内容加入到暂存堆栈，也可以随时取出</p>
-
-<h3>git stash</h3>
-
-<p>将当前的修改保存在暂存堆栈</p>
-
-<h3>git stash pop</h3>
-
-<p>将最新暂存堆栈的内容恢复到工作区</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/27/git-stash/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2013/01/15/linux-nginx-uwsgi/" title="Previous Post: Linux配置Nginx+uWsgi环境">&laquo; Linux配置Nginx+uWsgi环境</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/26/ubuntu-dropbox/">Ubuntu安装Dropbox后无法连接服务器的解决方法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-26T07:50:00+08:00" pubdate data-updated="true">Dec 26<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>由于工作需要，操作系统从Mac换到了Ubuntu，现在这个年代，谁没个云存储啥的，Dropbox当然是首选（通过某些方式已经将免费空间提升到25G了），装完Ubuntu后第一个事情就是装Dropbox。</p>
-
-<p>于是我就马不停蹄地下载了Dropbox的安装包然后装到Ubuntu上，装完一打开，弹出这么个提示：“Trouble connecting to Dropbox server.Maybe your internet connection is down,or you need to set your http_proxy environment variable”，主要意思就说无法连接上dropbox的服务器。</p>
-
-<p>然后我把hosts改了，问题依旧…，只有祭出google大神了</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/26/ubuntu-dropbox/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/24/copy-virtualbox-hd/">VirtualBox中复制使用虚拟硬盘</a></h1>
-    
-    
-      <p class="meta">
-        
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-24T22:56:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>VirtualBox可不像VMware那样，直接复制虚拟磁盘文件就可以了事的，只因为VirtualBox识别虚拟磁盘文件VDI采用了uuid识别技术。</p>
-
-<p>由于测试需要搭建局域网环境，需要两台虚拟机同时运行。当我安装完一个虚拟系统时，我将虚拟磁盘文件复制一份重新创建虚拟系统时提示打开虚拟硬盘 windowsxp.vdi 失败。</p>
-
-<pre><code>Cannot register the hard disk 'windowsxp.vdi' with UUID {24eb969f-8c98-470d-b2dd-35318f2b8860} 
-because a hard disk 'windowsxp.vdi' with UUID {24eb969f-8c98-470d-b2dd-35318f2b8860} already exists 
-in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
-</code></pre>
-
-<p>往Google里找寻了一番，原来Virtualbox也是有VBoxManage命令的,于是我决定给复制的vdi文件重新分配uuid。</p>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/24/copy-virtualbox-hd/">阅读全文 &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/24/multi-github-account/">使用多个ssh Key登录github不同账号</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-24T14:09:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。</p>
-
-<p>例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/hosts文件，设置两个本地域名指向github.com</p>
-
-<figure class='code'><figcaption><span>/etc/hosts  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>a.github.com    github.com  <span class="c">#a.github.com可以是任意文字</span>
-</span><span class='line'>b.github.com    github.com
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>修改用户的ssh配置文件~/.ssh/config，示例如下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/24/multi-github-account/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/24/min-fedora/">最小化安装Fedora</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-24T09:17:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>1.光盘引导</p>
-
-<p>进入到Fedora 16的安装引导界面，按TAB键，在后面追加数字3，Enter，</p>
-
-<p>然后系统引导，弹出一个登录，使用root直接登录即可。</p>
-
-<p>2.运行如下命令</p>
-
-<p>/usr/sbin/anaconda &#8211;liveinst &#8211;method=livecd:///dev/mapper/live-osimg-min</p>
-
-<p>然后提示完成安装即可。</p>
-
-<p>3.最后需要修改一个默认启动到文本界面</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/24/min-fedora/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/24/useful-shell/">经典实用的Shell命令</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-24T09:02:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>1、ls -AQ|grep -v proc|xargs du -sh|sort -h</strong></p>
-
-<p>按从小到大的顺序显示根目录下除proc目录以外的所有文件及目录大小（须在根目录下执行该命令）</p>
-
-<p><strong>2、dpkg -l |grep ^rc |awk &#8216;{print $2}&#8217; |xargs dpkg &#8211;purge</strong></p>
-
-<p>删除已删除包的残留配置文件（Debian分支）</p>
-
-<p><strong>3、find . -type f -print |xargs du -sb |sort -h</strong></p>
-
-<p>查找当下目录及其子目录下面的所有文件，并按文件大小，由小到大排序</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -855,7 +437,7 @@ in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/sagerxiao">@sagerxiao</a> on GitHub
@@ -898,6 +480,7 @@ in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -912,7 +495,10 @@ in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
       var disqus_shortname = 'sagerblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sagerblog.github.com/blog/2013/01/15/linux-service-auto-startup/';
+        var disqus_url = 'http://sagerblog.github.com/blog/2013/01/15/linux-service-auto-startup/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

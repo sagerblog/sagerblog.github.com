@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: auto startup | SagerXiao's Blog]]></title>
+  <link href="http://sagerblog.github.com/blog/categories/auto-startup/atom.xml" rel="self"/>
+  <link href="http://sagerblog.github.com/"/>
+  <updated>2013-01-15T14:57:30+08:00</updated>
+  <id>http://sagerblog.github.com/</id>
+  <author>
+    <name><![CDATA[Sager Xiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[配置Nginx和uWsig服务开机自动启动]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/15/linux-service-auto-startup/"/>
+    <updated>2013-01-15T14:53:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/15/linux-service-auto-startup</id>
+    <content type="html"><![CDATA[<h3>1.配置Nginx服务开机自动启动</h3>
+
+<h4>1.1创建 Nginx 开机启动脚本</h4>
+
+<p><code>bash add auto run
+vi /etc/init.d/nginx
+</code>
+将以下内容写到该脚本中
+```bash auto start scripts</p>
+
+<h1>!/bin/bash</h1>
+
+<p>nginx=/usr/sbin/nginx
+conf=/etc/nginx/nginx.conf</p>
+
+<p>case $1 in</p>
+
+<pre><code>start)
+    echo -n "Starting Nginx"
+    $nginx -c $conf
+    echo " done"
+;;
+
+stop)
+    echo -n "Stopping Nginx"
+    $nginx -s stop
+    echo " done"
+;;
+
+test)
+    $nginx -t -c $conf
+;;
+
+reload)
+    echo -n "Reloading Nginx"
+    $nginx -s reload
+    echo " done"
+;;
+
+restart)
+    $0 stop
+    $0 start
+;;
+
+show)
+    ps -aux|grep nginx
+;;
+
+*)
+    echo -n "Usage: $0 {start|restart|reload|stop|test|show}"
+;;
+</code></pre>
+
+<p>esac
+```</p>
+
+<h4>1.2为 nginx.sh 脚本设置可执行属性</h4>
+
+<p><code>bash executable
+chmod +x /etc/init.d/nginx
+</code></p>
+
+<h4>1.3添加 Nginx 为系统服务（开机自动启动）</h4>
+
+<p><code>bash add to sysconfig
+chkconfig --add nginx
+chkconfig nginx on
+</code></p>
+
+<h4>1.4启动 Nginx</h4>
+
+<p><code>bash start service
+service nginx start
+</code></p>
+
+<h4>1.5在不停止 Nginx 服务的情况下平滑变更 Nginx 配置</h4>
+
+<p>修改 /usr/local/webserver/nginx/conf/nginx.conf 配置文件后，请执行以下命令检查配置文件是否正确：
+<code>bash test config and reload
+service nginx test
+service nginx reload
+</code></p>
+
+<h3>2.配置uWsgi服务开机自动启动</h3>
+
+<h4>2.1创建 uWsgi 开机启动脚本</h4>
+
+<p><code>bash add auto run
+vi /etc/init.d/uwsgi
+</code>
+将以下内容写到该脚本中
+```bash auto start scripts</p>
+
+<h1>!/bin/bash</h1>
+
+<p>uwsgi=/usr/bin/uwsgi
+api_conf=/etc/uwsgi/apps-enabled/project-api.ini
+web_conf=/etc/uwsgi/apps-enabled/project-web.ini</p>
+
+<p>case $1 in</p>
+
+<pre><code>start)
+    echo -n "Starting uWsgi"
+    nohup $uwsgi -i $api_conf &gt;/var/log/uwsgi/project-api.log 2&gt;&amp;1 &amp;
+    nohup $uwsgi -i $web_conf &gt;/var/log/uwsgi/project-web.log 2&gt;&amp;1 &amp;
+    echo " done"
+;;
+
+stop)
+    echo -n "Stopping uWsgi"
+    killall -9 uwsgi
+    echo " done"
+;;
+
+restart)
+    $0 stop
+    $0 start
+;;
+
+show)
+    ps -ef|grep uwsgi
+;;
+
+*)
+    echo -n "Usage: $0 {start|restart|stop|show}"
+;;
+</code></pre>
+
+<p>esac
+```</p>
+
+<h4>2.2为 uwsgi 脚本设置可执行属性</h4>
+
+<p><code>bash executable
+chmod +x /etc/init.d/uwsgi
+</code></p>
+
+<h4>2.3添加 uWsgi 为系统服务（开机自动启动）</h4>
+
+<p><code>bash add to sysconfig
+chkconfig --add uwsgi
+chkconfig uwsgi on
+</code></p>
+
+<h4>2.4启动 uWsgi</h4>
+
+<p><code>bash start service
+service uwsgi start
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

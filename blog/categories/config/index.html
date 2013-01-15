@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>使用多个ssh key登录github不同账号 - SagerXiao's Blog</title>
+  <title>Category: config - SagerXiao's Blog</title>
   <meta name="author" content="Sager Xiao">
 
   
-  <meta name="description" content="使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。 例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/ &hellip;">
+  <meta name="description" content="Category: config">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/">
+  <link rel="canonical" href="http://sagerblog.github.comblog/categories/config/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -64,148 +64,36 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">使用多个ssh Key登录github不同账号</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-24T14:09:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
-        
-      </p>
+    <h1 class="entry-title">Category: Config</h1>
     
   </header>
-
-
-<div class="entry-content"><p>使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。</p>
-
-<p>例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/hosts文件，设置两个本地域名指向github.com</p>
-
-<figure class='code'><figcaption><span>/etc/hosts  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>a.github.com    github.com  <span class="c">#a.github.com可以是任意文字</span>
-</span><span class='line'>b.github.com    github.com
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>修改用户的ssh配置文件~/.ssh/config，示例如下：</p>
-
-<!-- more -->
-
-
-
-
-<figure class='code'><figcaption><span>~/.ssh/config </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>Host a.github.com
-</span><span class='line'>    User git
-</span><span class='line'>    Hostname github.com
-</span><span class='line'>    PreferredAuthentications publickey
-</span><span class='line'>    IdentityFile ~/.ssh/id_rsa_a
-</span><span class='line'>Host b.github.com
-</span><span class='line'>    User git
-</span><span class='line'>    Hostname github.com
-</span><span class='line'>    PreferredAuthentications publickey
-</span><span class='line'>    IdentityFile ~/.ssh/id_rsa_b
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后在你的git仓库的远程地址中，将对应的a.github.com和b.github.com替换原来的github.com，参考下面的变化：</p>
-
-<figure class='code'><figcaption><span>git clone </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git@a.githuc.com:sagerblog/sagerblog.github.com
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Sager Xiao</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2013</h2>
+
+<article>
+  
+<h1><a href="/blog/2013/01/15/linux-nginx-uwsgi/">Linux配置Nginx+uWsgi环境</a></h1>
+<time datetime="2013-01-15T12:49:00+08:00" pubdate><span class='month'>Jan</span> <span class='day'>15</span> <span class='year'>2013</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/config/'>config</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/nginx/'>nginx</a>, <a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/uwsgi/'>uwsgi</a></span>
+</footer>
 
 
-<time datetime="2012-12-24T14:09:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/ssh/'>ssh</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/" data-via="" data-counturl="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2012/12/24/min-fedora/" title="Previous Post: 最小化安装Fedora">&laquo; 最小化安装Fedora</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2012/12/24/copy-virtualbox-hd/" title="Next Post: VirtualBox中复制使用虚拟硬盘">VirtualBox中复制使用虚拟硬盘 &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  </section>
+
+  
+</article>
 
 </div>
 
@@ -299,10 +187,7 @@
       var disqus_shortname = 'sagerblog';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://sagerblog.github.com/blog/2012/12/24/multi-github-account/';
-        var disqus_url = 'http://sagerblog.github.com/blog/2012/12/24/multi-github-account/';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
