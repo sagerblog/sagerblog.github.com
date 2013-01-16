@@ -9,12 +9,7 @@
   <meta name="author" content="Sager Xiao">
 
   
-  <meta name="description" content="Sager&#8217;s HTML5 presentations Discover if a number is prime Source Article1
-2
-3
-4
-5
-class Fixnum def prime? (&#39;1&#39; * self) !~ /^1?$|^(11 &hellip;">
+  <meta name="description" content="1、ls -AQ|grep -v proc|xargs du -sh|sort -h 按从小到大的顺序显示根目录下除proc目录以外的所有文件及目录大小（须在根目录下执行该命令） 2、dpkg -l |grep ^rc |awk &#8216;{print $2}&#8217; |xargs &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +65,52 @@ class Fixnum def prime? (&#39;1&#39; * self) !~ /^1?$|^(11 &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/24/useful-shell/">经典实用的Shell命令</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-24T09:02:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>1、ls -AQ|grep -v proc|xargs du -sh|sort -h</strong></p>
+
+<p>按从小到大的顺序显示根目录下除proc目录以外的所有文件及目录大小（须在根目录下执行该命令）</p>
+
+<p><strong>2、dpkg -l |grep ^rc |awk &#8216;{print $2}&#8217; |xargs dpkg &#8211;purge</strong></p>
+
+<p>删除已删除包的残留配置文件（Debian分支）</p>
+
+<p><strong>3、find . -type f -print |xargs du -sb |sort -h</strong></p>
+
+<p>查找当下目录及其子目录下面的所有文件，并按文件大小，由小到大排序</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -210,6 +251,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/01/16/rpm-command/">RPM使用详解</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/01/15/linux-service-auto-startup/">配置Nginx和uWsig服务开机自动启动</a>
       </li>
     
@@ -223,10 +268,6 @@ end
     
       <li class="post">
         <a href="/blog/2013/01/08/git-branch/">git分支的使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/27/git-stash/">使用git stash暂存修改</a>
       </li>
     
   </ul>

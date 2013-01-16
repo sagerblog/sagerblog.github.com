@@ -9,25 +9,7 @@
   <meta name="author" content="Sager Xiao">
 
   
-  <meta name="description" content="1.配置Nginx服务开机自动启动 1.1创建 Nginx 开机启动脚本 add auto run1
-vi /etc/init.d/nginx 将以下内容写到该脚本中 auto start scripts 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18 &hellip;">
+  <meta name="description" content="RPM使用详解 在Linux操作系统中，有一个系统软件包，它的功能类似于Windows里面的“添加/删除程序”，但是功能又比“添加/删除程序”强很多，它就是Red Hat Package Manager(简称RPM)。此工具包最先是由Red Hat公司推出的，后来被其他Linux开发商所借用。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +71,55 @@ vi /etc/init.d/nginx 将以下内容写到该脚本中 auto start scripts 1
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/01/16/rpm-command/">RPM使用详解</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-16T14:03:00+08:00" pubdate data-updated="true">Jan 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>RPM使用详解</h3>
+
+<p>在Linux操作系统中，有一个系统软件包，它的功能类似于Windows里面的“添加/删除程序”，但是功能又比“添加/删除程序”强很多，它就是Red Hat Package Manager(简称RPM)。此工具包最先是由Red Hat公司推出的，后来被其他Linux开发商所借用。由于它为Linux使用者省去了很多时间，所以被广泛应用于在Linux下安装、删除软件。下面就给大家介绍一下它的具体使用方法。</p>
+
+<p>1.我们得到一个新软件，在安装之前，一般都要先查看一下这个软件包里有什么内容，假设这个文件是：Linux-1.4-6.i368.rpm，我们可以用这条命令查看：</p>
+
+<p>rpm -qpi Linux-1.4-6.i368.rpm</p>
+
+<p>系统将会列出这个软件包的详细资料，包括含有多少个文件、各文件名称、文件大小、创建时间、编译日期等信息。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/01/16/rpm-command/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/01/15/linux-service-auto-startup/">配置Nginx和uWsig服务开机自动启动</a></h1>
     
     
@@ -123,229 +154,12 @@ vi /etc/init.d/nginx 将以下内容写到该脚本中 auto start scripts 1
 
 <p>将以下内容写到该脚本中</p>
 
-<figure class='code'><figcaption><span>auto start scripts </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'><span class="nv">nginx</span><span class="o">=</span>/usr/sbin/nginx
-</span><span class='line'><span class="nv">conf</span><span class="o">=</span>/etc/nginx/nginx.conf
-</span><span class='line'>
-</span><span class='line'><span class="k">case</span> <span class="nv">$1</span> in
-</span><span class='line'>    start<span class="o">)</span>
-</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Starting Nginx&quot;</span>
-</span><span class='line'>        <span class="nv">$nginx</span> -c <span class="nv">$conf</span>
-</span><span class='line'>        <span class="nb">echo</span> <span class="s2">&quot; done&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    stop<span class="o">)</span>
-</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Stopping Nginx&quot;</span>
-</span><span class='line'>        <span class="nv">$nginx</span> -s stop
-</span><span class='line'>        <span class="nb">echo</span> <span class="s2">&quot; done&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    <span class="nb">test</span><span class="o">)</span>
-</span><span class='line'>        <span class="nv">$nginx</span> -t -c <span class="nv">$conf</span>
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    reload<span class="o">)</span>
-</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Reloading Nginx&quot;</span>
-</span><span class='line'>        <span class="nv">$nginx</span> -s reload
-</span><span class='line'>        <span class="nb">echo</span> <span class="s2">&quot; done&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    restart<span class="o">)</span>
-</span><span class='line'>        <span class="nv">$0</span> stop
-</span><span class='line'>        <span class="nv">$0</span> start
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    show<span class="o">)</span>
-</span><span class='line'>        ps -aux|grep nginx
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    *<span class="o">)</span>
-</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Usage: $0 {start|restart|reload|stop|test|show}&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'><span class="k">esac</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>1.2为 nginx.sh 脚本设置可执行属性</h4>
-
-<figure class='code'><figcaption><span>executable</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod +x /etc/init.d/nginx
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>1.3添加 Nginx 为系统服务（开机自动启动）</h4>
-
-<figure class='code'><figcaption><span>add to sysconfig</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>chkconfig --add nginx
-</span><span class='line'>chkconfig nginx on
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>1.4启动 Nginx</h4>
-
-<figure class='code'><figcaption><span>start service</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>service nginx start
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>1.5在不停止 Nginx 服务的情况下平滑变更 Nginx 配置</h4>
-
-<p>修改 /usr/local/webserver/nginx/conf/nginx.conf 配置文件后，请执行以下命令检查配置文件是否正确：</p>
-
-<figure class='code'><figcaption><span>test config and reload</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>service nginx <span class="nb">test</span>
-</span><span class='line'>service nginx reload
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>2.配置uWsgi服务开机自动启动</h3>
-
-<h4>2.1创建 uWsgi 开机启动脚本</h4>
-
-<figure class='code'><figcaption><span>add auto run</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>vi /etc/init.d/uwsgi
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>将以下内容写到该脚本中</p>
-
-<figure class='code'><figcaption><span>auto start scripts </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'><span class="nv">uwsgi</span><span class="o">=</span>/usr/bin/uwsgi
-</span><span class='line'><span class="nv">api_conf</span><span class="o">=</span>/etc/uwsgi/apps-enabled/project-api.ini
-</span><span class='line'><span class="nv">web_conf</span><span class="o">=</span>/etc/uwsgi/apps-enabled/project-web.ini
-</span><span class='line'>
-</span><span class='line'><span class="k">case</span> <span class="nv">$1</span> in
-</span><span class='line'>    start<span class="o">)</span>
-</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Starting uWsgi&quot;</span>
-</span><span class='line'>        nohup <span class="nv">$uwsgi</span> -i <span class="nv">$api_conf</span> &gt;/var/log/uwsgi/project-api.log 2&gt;&amp;1 &amp;
-</span><span class='line'>        nohup <span class="nv">$uwsgi</span> -i <span class="nv">$web_conf</span> &gt;/var/log/uwsgi/project-web.log 2&gt;&amp;1 &amp;
-</span><span class='line'>        <span class="nb">echo</span> <span class="s2">&quot; done&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    stop<span class="o">)</span>
-</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Stopping uWsgi&quot;</span>
-</span><span class='line'>        killall -9 uwsgi
-</span><span class='line'>        <span class="nb">echo</span> <span class="s2">&quot; done&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    restart<span class="o">)</span>
-</span><span class='line'>        <span class="nv">$0</span> stop
-</span><span class='line'>        <span class="nv">$0</span> start
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    show<span class="o">)</span>
-</span><span class='line'>        ps -ef|grep uwsgi
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'>    *<span class="o">)</span>
-</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Usage: $0 {start|restart|stop|show}&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>
-</span><span class='line'><span class="k">esac</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>2.2为 uwsgi 脚本设置可执行属性</h4>
-
-<figure class='code'><figcaption><span>executable</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod +x /etc/init.d/uwsgi
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>2.3添加 uWsgi 为系统服务（开机自动启动）</h4>
-
-<figure class='code'><figcaption><span>add to sysconfig</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>chkconfig --add uwsgi
-</span><span class='line'>chkconfig uwsgi on
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>2.4启动 uWsgi</h4>
-
-<figure class='code'><figcaption><span>start service</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>service uwsgi start
-</span></code></pre></td></tr></table></div></figure>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/01/15/linux-service-auto-startup/">阅读全文 &rarr;</a>
+    </footer>
   
 
 
@@ -769,52 +583,6 @@ in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/24/useful-shell/">经典实用的Shell命令</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-24T09:02:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>1、ls -AQ|grep -v proc|xargs du -sh|sort -h</strong></p>
-
-<p>按从小到大的顺序显示根目录下除proc目录以外的所有文件及目录大小（须在根目录下执行该命令）</p>
-
-<p><strong>2、dpkg -l |grep ^rc |awk &#8216;{print $2}&#8217; |xargs dpkg &#8211;purge</strong></p>
-
-<p>删除已删除包的残留配置文件（Debian分支）</p>
-
-<p><strong>3、find . -type f -print |xargs du -sb |sort -h</strong></p>
-
-<p>查找当下目录及其子目录下面的所有文件，并按文件大小，由小到大排序</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -830,6 +598,10 @@ in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/01/16/rpm-command/">RPM使用详解</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/01/15/linux-service-auto-startup/">配置Nginx和uWsig服务开机自动启动</a>
       </li>
     
@@ -843,10 +615,6 @@ in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
     
       <li class="post">
         <a href="/blog/2013/01/08/git-branch/">git分支的使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/27/git-stash/">使用git stash暂存修改</a>
       </li>
     
   </ul>

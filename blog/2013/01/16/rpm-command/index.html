@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>最小化安装Fedora - SagerXiao's Blog</title>
+  <title>RPM使用详解 - SagerXiao's Blog</title>
   <meta name="author" content="Sager Xiao">
 
   
-  <meta name="description" content="1.光盘引导 进入到Fedora 16的安装引导界面，按TAB键，在后面追加数字3，Enter， 然后系统引导，弹出一个登录，使用root直接登录即可。 2.运行如下命令 /usr/sbin/anaconda &#8211;liveinst &#8211;method=livecd:///dev/ &hellip;">
+  <meta name="description" content="RPM使用详解 在Linux操作系统中，有一个系统软件包，它的功能类似于Windows里面的“添加/删除程序”，但是功能又比“添加/删除程序”强很多，它就是Red Hat Package Manager(简称RPM)。此工具包最先是由Red Hat公司推出的，后来被其他Linux开发商所借用。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sagerblog.github.com/blog/2012/12/24/min-fedora/">
+  <link rel="canonical" href="http://sagerblog.github.com/blog/2013/01/16/rpm-command/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">最小化安装Fedora</h1>
+      <h1 class="entry-title">RPM使用详解</h1>
     
     
       <p class="meta">
@@ -84,37 +84,51 @@
   
 
 
-<time datetime="2012-12-24T09:17:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
+<time datetime="2013-01-16T14:03:00+08:00" pubdate data-updated="true">Jan 16<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>1.光盘引导</p>
+<div class="entry-content"><h3>RPM使用详解</h3>
 
-<p>进入到Fedora 16的安装引导界面，按TAB键，在后面追加数字3，Enter，</p>
+<p>在Linux操作系统中，有一个系统软件包，它的功能类似于Windows里面的“添加/删除程序”，但是功能又比“添加/删除程序”强很多，它就是Red Hat Package Manager(简称RPM)。此工具包最先是由Red Hat公司推出的，后来被其他Linux开发商所借用。由于它为Linux使用者省去了很多时间，所以被广泛应用于在Linux下安装、删除软件。下面就给大家介绍一下它的具体使用方法。</p>
 
-<p>然后系统引导，弹出一个登录，使用root直接登录即可。</p>
+<p>1.我们得到一个新软件，在安装之前，一般都要先查看一下这个软件包里有什么内容，假设这个文件是：Linux-1.4-6.i368.rpm，我们可以用这条命令查看：</p>
 
-<p>2.运行如下命令</p>
+<p>rpm -qpi Linux-1.4-6.i368.rpm</p>
 
-<p>/usr/sbin/anaconda &#8211;liveinst &#8211;method=livecd:///dev/mapper/live-osimg-min</p>
+<p>系统将会列出这个软件包的详细资料，包括含有多少个文件、各文件名称、文件大小、创建时间、编译日期等信息。</p>
 
-<p>然后提示完成安装即可。</p>
-
-<p>3.最后需要修改一个默认启动到文本界面</p>
-
-<!-- more -->
+<!--more-->
 
 
-<p>cd /etc/systemd/system</p>
+<p>2.上面列出的所有文件在安装时不一定全部安装，就像Windows下程序的安装方式分为典型、完全、自定义一样，Linux也会让你选择安装方式，此时我们可以用下面这条命令查看软件包将会在系统里安装哪些部分，以方便我们的选择：</p>
 
-<p>ln -s /lib/systemd/system/multi-user.target default.target</p>
+<p>rpm -qpl Linux-1.4-6.i368.rpm</p>
 
-<p>4.参考</p>
+<p>3.选择安装方式后，开始安装。我们可以用rpm-ivh Linux-1.4-6.i368.rpm命令安装此软件。在安装过程中，若系统提示此软件已安装过或因其他原因无法继续安装，但若我们确实想执行安装命令，可以在 -ivh后加一参数“-replacepkgs”：</p>
 
-<p>http://www.linuxreaders.com/2010/09/08/install-fedora-from-live-cd-cli/#.T1YF74da6G4</p>
+<p>rpm -ivh -replacepkgs Linux-1.4-6.i368.rpm</p>
+
+<p>4.有时我们卸载某个安装过的软件，只需执行rpm-e &lt;文件名>命令即可。</p>
+
+<p>5.对低版本软件进行升级是提高其功能的好办法，这样可以省去我们卸载后再安装新软件的麻烦，要升级某个软件，只须执行如下命令：rpm -uvh &lt;文件名>，注意：此时的文件名必须是要升级软件的升级补丁</p>
+
+<p>6.另外一个安装软件的方法可谓是Linux的独到之处，同时也是RMP强大功能的一个表现：通过FTP站点直接在线安装软件。当找到含有你所需软件的站点并与此网站连接后，执行下面的命令即可实现在线安装，譬如在线安装Linux-1.4-6.i368.rpm，可以用命令：</p>
+
+<p>rpm -i ftp://ftp.pht.com/pub/linux/redhat/&#8230;-1.4-6.i368.rpm</p>
+
+<p>7.在我们使用电脑过程中，难免会有误操作，若我们误删了几个文件而影响了系统的性能时，怎样查找到底少了哪些文件呢?RPM软件包提供了一个查找损坏文件的功能，执行此命令：rpm -Va即可，Linux将为你列出所有损坏的文件。你可以通过Linux的安装光盘进行修复。</p>
+
+<p>8.Linux系统中文件繁多，在使用过程中，难免会碰到我们不认识的文件，在Windows下我们可以用“开始/查找”菜单快速判断某个文件属于哪个文件夹，在Linux中，下面这条命令行可以帮助我们快速判定某个文件属于哪个软件包：</p>
+
+<p>rpm -qf &lt;文件名></p>
+
+<p>9.当每个软件包安装在Linux系统后，安装文件都会到RPM数据库中“报到”，所以，我们要查询某个已安装软件的属性时，只需到此数据库中查找即可。注意：此时的查询命令不同于1和8介绍的查询，这种方法只适用于已安装过的软件包！命令格式：</p>
+
+<p>rpm -参数　&lt;文件名></p>
 </div>
 
 
@@ -137,12 +151,12 @@
   
 
 
-<time datetime="2012-12-24T09:17:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
+<time datetime="2013-01-16T14:03:00+08:00" pubdate data-updated="true">Jan 16<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/it/'>it</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
+    <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/rpm/'>rpm</a>
   
 </span>
 
@@ -151,7 +165,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sagerblog.github.com/blog/2012/12/24/min-fedora/" data-via="" data-counturl="http://sagerblog.github.com/blog/2012/12/24/min-fedora/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sagerblog.github.com/blog/2013/01/16/rpm-command/" data-via="" data-counturl="http://sagerblog.github.com/blog/2013/01/16/rpm-command/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -164,10 +178,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/12/24/useful-shell/" title="Previous Post: 经典实用的Shell命令">&laquo; 经典实用的Shell命令</a>
+        <a class="basic-alignment left" href="/blog/2013/01/15/linux-service-auto-startup/" title="Previous Post: 配置Nginx和uWsig服务开机自动启动">&laquo; 配置Nginx和uWsig服务开机自动启动</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/12/24/multi-github-account/" title="Next Post: 使用多个ssh key登录github不同账号">使用多个ssh key登录github不同账号 &raquo;</a>
       
     </p>
   </footer>
@@ -272,8 +284,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://sagerblog.github.com/blog/2012/12/24/min-fedora/';
-        var disqus_url = 'http://sagerblog.github.com/blog/2012/12/24/min-fedora/';
+        var disqus_identifier = 'http://sagerblog.github.com/blog/2013/01/16/rpm-command/';
+        var disqus_url = 'http://sagerblog.github.com/blog/2013/01/16/rpm-command/';
         var disqus_script = 'embed.js';
       
     (function () {

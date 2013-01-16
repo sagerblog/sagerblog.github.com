@@ -4,7 +4,7 @@
   <title><![CDATA[Category: service | SagerXiao's Blog]]></title>
   <link href="http://sagerblog.github.com/blog/categories/service/atom.xml" rel="self"/>
   <link href="http://sagerblog.github.com/"/>
-  <updated>2013-01-15T15:15:51+08:00</updated>
+  <updated>2013-01-16T14:09:58+08:00</updated>
   <id>http://sagerblog.github.com/</id>
   <author>
     <name><![CDATA[Sager Xiao]]></name>
@@ -25,8 +25,12 @@
 <p><code>bash add auto run
 vi /etc/init.d/nginx
 </code>
-将以下内容写到该脚本中
-```bash auto start scripts</p>
+将以下内容写到该脚本中</p>
+
+<!--more-->
+
+
+<p>```bash auto start scripts</p>
 
 <h1>!/bin/bash</h1>
 
