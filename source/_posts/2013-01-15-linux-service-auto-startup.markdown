@@ -12,6 +12,7 @@ categories: [nginx, uwsgi, linux, service, auto startup]
 vi /etc/init.d/nginx
 ```
 将以下内容写到该脚本中
+<!--more-->
 ```bash auto start scripts 
 #!/bin/bash
 nginx=/usr/sbin/nginx
