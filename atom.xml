@@ -4,7 +4,7 @@
   <title><![CDATA[SagerXiao's Blog]]></title>
   <link href="http://sagerblog.github.com/atom.xml" rel="self"/>
   <link href="http://sagerblog.github.com/"/>
-  <updated>2013-01-16T14:09:58+08:00</updated>
+  <updated>2013-01-21T18:44:14+08:00</updated>
   <id>http://sagerblog.github.com/</id>
   <author>
     <name><![CDATA[Sager Xiao]]></name>
@@ -12,6 +12,158 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Python循环遍历所有文件并改名]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/21/python-walk-rename-file/"/>
+    <updated>2013-01-21T18:34:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/21/python-walk-rename-file</id>
+    <content type="html"><![CDATA[<p>我希望将某个目录下的所有jpeg文件改名为jpg结尾的文件，可以利用os.walk功能以及os.rename两个功能</p>
+
+<figure class='code'><figcaption><span>walk all files in special directory</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/python</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">os</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">walkDir</span><span class="p">(</span><span class="n">rootdir</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">rootdir</span>
+</span><span class='line'>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">parent</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span>
+</span><span class='line'>        <span class="c">#for dirname in dirnames:</span>
+</span><span class='line'>        <span class="c">#    print &quot;parent is:&quot; + parent</span>
+</span><span class='line'>        <span class="c">#    print &quot;dirname is:&quot; + dirname</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">==</span> <span class="s">&quot;.jpeg&quot;</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">src_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">dest_file</span> <span class="o">=</span> <span class="n">src_file</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;.jpg&quot;</span>
+</span><span class='line'>            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">dest_file</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&#39;Rename total file count is:&#39;</span><span class="p">,</span> <span class="n">count</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">walkDir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<p>利用walk还可以做很多其他的事情，例如对所有python源代码进行编译，以便发布打包的时候使用遍以后的二进制文件，而不是源代码。
+可以使用如下代码：</p>
+
+<figure class='code'><figcaption><span>Compile python source code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">py_compile</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[python计算文件行数的三种方法]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/21/python-file-line-count/"/>
+    <updated>2013-01-21T18:26:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/21/python-file-line-count</id>
+    <content type="html"><![CDATA[<h2>Python计算文件行数的三种方法</h2>
+
+<figure class='code'><figcaption><span>Caculate file lines</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">timeit</span><span class="o">,</span><span class="nn">os</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">linecount_1</span><span class="p">():</span>
+</span><span class='line'><span class="err">    </span><span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;data.sql&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>    <span class="c">#最直接的方法</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">linecount_2</span><span class="p">():</span>
+</span><span class='line'><span class="err">    </span><span class="n">count</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c">#让空文件的行号显示0</span>
+</span><span class='line'><span class="err">    </span><span class="k">for</span> <span class="n">count</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;data.sql&#39;</span><span class="p">)):</span> <span class="k">pass</span>
+</span><span class='line'><span class="err">    </span><span class="c">#enumerate格式化成了元组,count就是行号,因为从0开始要+1</span>
+</span><span class='line'><span class="err">    </span><span class="k">return</span> <span class="n">count</span><span class="o">+</span><span class="mi">1</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="k">def</span> <span class="nf">linecount_3</span><span class="p">():</span>
+</span><span class='line'><span class="err">    </span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="err">    </span><span class="n">thefile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;data.sql&#39;</span><span class="p">,</span><span class="s">&#39;rb&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="err">    </span><span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+</span><span class='line'><span class="err">        </span><span class="nb">buffer</span> <span class="o">=</span> <span class="n">thefile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">65536</span><span class="p">)</span>
+</span><span class='line'><span class="err">        </span><span class="k">if</span> <span class="ow">not</span> <span class="nb">buffer</span><span class="p">:</span><span class="k">break</span>
+</span><span class='line'><span class="err">        </span><span class="n">count</span> <span class="o">+=</span> <span class="nb">buffer</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span> <span class="c">#通过读取换行符计算</span>
+</span><span class='line'><span class="err">    </span><span class="k">return</span> <span class="n">count</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">linecount_1</span><span class="p">,</span><span class="n">linecount_2</span><span class="p">,</span><span class="n">linecount_3</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span><span class="n">f</span><span class="p">()</span>
+</span><span class='line'>    <span class="err"> </span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">linecount_1</span><span class="p">,</span><span class="n">linecount_2</span><span class="p">,</span><span class="n">linecount_3</span><span class="p">:</span>
+</span><span class='line'>        <span class="c">#第一个参数是函数,第二个参数是环境，例如import模块</span>
+</span><span class='line'>    <span class="err">    </span><span class="n">t</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="c">#第一个参数是重复整个测试的次数，第二个参数是每个测试中调用被计时语句的次数。</span>
+</span><span class='line'>    <span class="err">    </span><span class="k">print</span> <span class="nb">min</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h3>结果：</h3>
+
+<p>linecount_1 43119</p>
+
+<p>linecount_2 43119</p>
+
+<p>linecount_3 43119</p>
+
+<p>0.04646344717</p>
+
+<p>0.0403758019525</p>
+
+<p>0.0126613857348</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[RPM使用详解]]></title>

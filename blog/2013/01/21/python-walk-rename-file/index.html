@@ -5,11 +5,31 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>使用多个ssh key登录github不同账号 - SagerXiao's Blog</title>
+  <title>Python循环遍历所有文件并改名 - SagerXiao's Blog</title>
   <meta name="author" content="Sager Xiao">
 
   
-  <meta name="description" content="使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。 例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/ &hellip;">
+  <meta name="description" content="我希望将某个目录下的所有jpeg文件改名为jpg结尾的文件，可以利用os.walk功能以及os.rename两个功能 walk all files in special directory1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +38,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/">
+  <link rel="canonical" href="http://sagerblog.github.com/blog/2013/01/21/python-walk-rename-file/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -68,7 +88,7 @@
   
   <header>
     
-      <h1 class="entry-title">使用多个ssh Key登录github不同账号</h1>
+      <h1 class="entry-title">Python循环遍历所有文件并改名</h1>
     
     
       <p class="meta">
@@ -84,34 +104,16 @@
   
 
 
-<time datetime="2012-12-24T14:09:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
+<time datetime="2013-01-21T18:34:00+08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>使用ssh key的时候可以通过config文件指定不同域名使用不同的key文件，因此通过在hosts中设置不同的本地域名来使用多个ssh key文件登陆不同的github账号。</p>
+<div class="entry-content"><p>我希望将某个目录下的所有jpeg文件改名为jpg结尾的文件，可以利用os.walk功能以及os.rename两个功能</p>
 
-<p>例如我们有账号a和账号b，对应的ssh key文件分别是id_rsa_a和id_rsa_b，首先修改/etc/hosts文件，设置两个本地域名指向github.com</p>
-
-<figure class='code'><figcaption><span>/etc/hosts  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>a.github.com    github.com  <span class="c">#a.github.com可以是任意文字</span>
-</span><span class='line'>b.github.com    github.com
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>修改用户的ssh配置文件~/.ssh/config，示例如下：</p>
-
-<!-- more -->
-
-
-
-
-<figure class='code'><figcaption><span>~/.ssh/config </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>walk all files in special directory</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -121,27 +123,54 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>Host a.github.com
-</span><span class='line'>    User git
-</span><span class='line'>    Hostname github.com
-</span><span class='line'>    PreferredAuthentications publickey
-</span><span class='line'>    IdentityFile ~/.ssh/id_rsa_a
-</span><span class='line'>Host b.github.com
-</span><span class='line'>    User git
-</span><span class='line'>    Hostname github.com
-</span><span class='line'>    PreferredAuthentications publickey
-</span><span class='line'>    IdentityFile ~/.ssh/id_rsa_b
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/python</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">os</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">walkDir</span><span class="p">(</span><span class="n">rootdir</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">rootdir</span>
+</span><span class='line'>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">parent</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span>
+</span><span class='line'>        <span class="c">#for dirname in dirnames:</span>
+</span><span class='line'>        <span class="c">#    print &quot;parent is:&quot; + parent</span>
+</span><span class='line'>        <span class="c">#    print &quot;dirname is:&quot; + dirname</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">==</span> <span class="s">&quot;.jpeg&quot;</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">src_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">dest_file</span> <span class="o">=</span> <span class="n">src_file</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;.jpg&quot;</span>
+</span><span class='line'>            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">dest_file</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&#39;Rename total file count is:&#39;</span><span class="p">,</span> <span class="n">count</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">walkDir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>然后在你的git仓库的远程地址中，将对应的a.github.com和b.github.com替换原来的github.com，参考下面的变化：</p>
+<!--more-->
 
-<figure class='code'><figcaption><span>git clone </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git@a.githuc.com:sagerblog/sagerblog.github.com
+
+<p>利用walk还可以做很多其他的事情，例如对所有python源代码进行编译，以便发布打包的时候使用遍以后的二进制文件，而不是源代码。
+可以使用如下代码：</p>
+
+<figure class='code'><figcaption><span>Compile python source code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">py_compile</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 
 </div>
 
@@ -165,12 +194,12 @@
   
 
 
-<time datetime="2012-12-24T14:09:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
+<time datetime="2013-01-21T18:34:00+08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/ssh/'>ssh</a>
+    <a class='category' href='/blog/categories/file/'>file</a>, <a class='category' href='/blog/categories/python/'>python</a>
   
 </span>
 
@@ -179,7 +208,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/" data-via="" data-counturl="http://sagerblog.github.com/blog/2012/12/24/multi-github-account/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sagerblog.github.com/blog/2013/01/21/python-walk-rename-file/" data-via="" data-counturl="http://sagerblog.github.com/blog/2013/01/21/python-walk-rename-file/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -192,10 +221,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/12/24/min-fedora/" title="Previous Post: 最小化安装Fedora">&laquo; 最小化安装Fedora</a>
+        <a class="basic-alignment left" href="/blog/2013/01/21/python-file-line-count/" title="Previous Post: python计算文件行数的三种方法">&laquo; python计算文件行数的三种方法</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/12/24/copy-virtualbox-hd/" title="Next Post: VirtualBox中复制使用虚拟硬盘">VirtualBox中复制使用虚拟硬盘 &raquo;</a>
       
     </p>
   </footer>
@@ -300,8 +327,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://sagerblog.github.com/blog/2012/12/24/multi-github-account/';
-        var disqus_url = 'http://sagerblog.github.com/blog/2012/12/24/multi-github-account/';
+        var disqus_identifier = 'http://sagerblog.github.com/blog/2013/01/21/python-walk-rename-file/';
+        var disqus_url = 'http://sagerblog.github.com/blog/2013/01/21/python-walk-rename-file/';
         var disqus_script = 'embed.js';
       
     (function () {

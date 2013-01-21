@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: os | SagerXiao's Blog]]></title>
+  <link href="http://sagerblog.github.com/blog/categories/os/atom.xml" rel="self"/>
+  <link href="http://sagerblog.github.com/"/>
+  <updated>2013-01-21T18:44:14+08:00</updated>
+  <id>http://sagerblog.github.com/</id>
+  <author>
+    <name><![CDATA[Sager Xiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[python计算文件行数的三种方法]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/21/python-file-line-count/"/>
+    <updated>2013-01-21T18:26:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/21/python-file-line-count</id>
+    <content type="html"><![CDATA[<h2>Python计算文件行数的三种方法</h2>
+
+<p>```python Caculate file lines
+import timeit,os
+def linecount_1():
+    return len(open('data.sql').readlines())    #最直接的方法</p>
+
+<p>def linecount_2():
+    count = -1 #让空文件的行号显示0
+    for count,line in enumerate(open('data.sql')): pass
+    #enumerate格式化成了元组,count就是行号,因为从0开始要+1
+    return count+1
+ 
+def linecount_3():
+    count = 0
+    thefile = open('data.sql','rb')
+    while 1:
+        buffer = thefile.read(65536)
+        if not buffer:break
+        count += buffer.count('\n') #通过读取换行符计算
+    return count
+ 
+for f in linecount_1,linecount_2,linecount_3:</p>
+
+<pre><code>print f.__name__,f()
+ 
+for f in linecount_1,linecount_2,linecount_3:
+    #第一个参数是函数,第二个参数是环境，例如import模块
+    t = timeit.Timer(f,'')      
+    #第一个参数是重复整个测试的次数，第二个参数是每个测试中调用被计时语句的次数。
+    print min(t.repeat(100,3))  
+</code></pre>
+
+<p>```</p>
+
+<!--more-->
+
+
+<h3>结果：</h3>
+
+<p>linecount_1 43119</p>
+
+<p>linecount_2 43119</p>
+
+<p>linecount_3 43119</p>
+
+<p>0.04646344717</p>
+
+<p>0.0403758019525</p>
+
+<p>0.0126613857348</p>
+]]></content>
+  </entry>
+  
+</feed>
