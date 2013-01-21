@@ -4,7 +4,7 @@
   <title><![CDATA[SagerXiao's Blog]]></title>
   <link href="http://sagerblog.github.com/atom.xml" rel="self"/>
   <link href="http://sagerblog.github.com/"/>
-  <updated>2013-01-21T18:44:14+08:00</updated>
+  <updated>2013-01-21T18:51:18+08:00</updated>
   <id>http://sagerblog.github.com/</id>
   <author>
     <name><![CDATA[Sager Xiao]]></name>
@@ -18,7 +18,7 @@
     <link href="http://sagerblog.github.com/blog/2013/01/21/python-walk-rename-file/"/>
     <updated>2013-01-21T18:34:00+08:00</updated>
     <id>http://sagerblog.github.com/blog/2013/01/21/python-walk-rename-file</id>
-    <content type="html"><![CDATA[<p>我希望将某个目录下的所有jpeg文件改名为jpg结尾的文件，可以利用os.walk功能以及os.rename两个功能</p>
+    <content type="html"><![CDATA[<p>我希望将某个目录下的所有jpeg文件改名为jpg结尾的文件，可以利用os.walk和os.rename两个功能</p>
 
 <figure class='code'><figcaption><span>walk all files in special directory</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -55,11 +55,11 @@
 </span><span class='line'>        <span class="c">#    print &quot;dirname is:&quot; + dirname</span>
 </span><span class='line'>        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
 </span><span class='line'>            <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">==</span> <span class="s">&quot;.jpeg&quot;</span><span class="p">:</span>
-</span><span class='line'>            <span class="n">src_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-</span><span class='line'>            <span class="n">dest_file</span> <span class="o">=</span> <span class="n">src_file</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;.jpg&quot;</span>
-</span><span class='line'>            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">dest_file</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&#39;Rename total file count is:&#39;</span><span class="p">,</span> <span class="n">count</span>
+</span><span class='line'>                <span class="n">src_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+</span><span class='line'>                <span class="n">dest_file</span> <span class="o">=</span> <span class="n">src_file</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;.jpg&quot;</span>
+</span><span class='line'>                <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">dest_file</span><span class="p">)</span>
+</span><span class='line'>                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&#39;Rename total file count is:&#39;</span><span class="p">,</span> <span class="n">count</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 </span><span class='line'>    <span class="n">walkDir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
