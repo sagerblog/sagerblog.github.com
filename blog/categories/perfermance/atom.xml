@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: perfermance | SagerXiao's Blog]]></title>
+  <link href="http://sagerblog.github.com/blog/categories/perfermance/atom.xml" rel="self"/>
+  <link href="http://sagerblog.github.com/"/>
+  <updated>2013-01-23T10:38:27+08:00</updated>
+  <id>http://sagerblog.github.com/</id>
+  <author>
+    <name><![CDATA[Sager Xiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[linux下查看进程内存使用情况]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/23/linux-process-memory/"/>
+    <updated>2013-01-23T10:28:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/23/linux-process-memory</id>
+    <content type="html"><![CDATA[<h3>动态查看一个进程的内存使用</h3>
+
+<p>```bash Show process memory usage
+top
+top -d 1 -p pid [,pid ...] #设置为delay 1s， 默认delay是3s</p>
+
+<h1>shit + m (Sort by memory usage)</h1>
+
+<p>```</p>
+
+<!--more-->
+
+
+<h3>静态查看一个进程的内存使用</h3>
+
+<p>```bash Static show process memory usage
+pmap pid</p>
+
+<p>ps aux|grep process_name</p>
+
+<p>cat /proc/pid/status
+Name:   python
+State:  S (sleeping)
+Tgid:   1813
+Pid:    1813
+PPid:   1
+TracerPid:  0
+Uid:    501 501 501 501
+Gid:    501 501 501 501
+Utrace: 0
+FDSize: 64
+Groups: 501
+VmPeak:   999456 kB
+VmSize:   999456 kB
+VmLck:         0 kB
+VmHWM:     37628 kB
+VmRSS:     37628 kB
+VmData:   744284 kB
+VmStk:       188 kB
+VmExe:         4 kB
+VmLib:     11548 kB
+VmPTE:       532 kB
+VmSwap:        0 kB
+Threads:    19
+SigQ:   0/30515
+SigPnd: 0000000000000000
+ShdPnd: 0000000000000000
+SigBlk: 0000000000000000
+SigIgn: 0000000001001007
+SigCgt: 0000000180000000
+CapInh: 0000000000000000
+CapPrm: 0000000000000000
+CapEff: 0000000000000000
+CapBnd: ffffffffffffffff
+Cpus_allowed:   1
+Cpus_allowed_list:  0
+Mems_allowed:   00000000,00000000,00000000,00000000,00000000,00000000,00000000,\
+00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:  0
+voluntary_ctxt_switches:    84
+nonvoluntary_ctxt_switches: 356</p>
+
+<h1>任务虚拟地址空间的大小 VmSize</h1>
+
+<h1>应用程序正在使用的物理内存的大小 VmRSS</h1>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>

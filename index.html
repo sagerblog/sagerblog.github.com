@@ -9,28 +9,12 @@
   <meta name="author" content="Sager Xiao">
 
   
-  <meta name="description" content="我希望将某个目录下的所有jpeg文件改名为jpg结尾的文件，可以利用os.walk和os.rename两个功能 walk all files in special directory1
+  <meta name="description" content="动态查看一个进程的内存使用 Show process memory usage1
 2
 3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22 &hellip;">
+top
+top -d 1 -p pid [,pid ...] #设置为delay 1s， 默认delay是3s
+#shit + m (Sort by memory usage) ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +70,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/23/linux-process-memory/">Linux下查看进程内存使用情况</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-23T10:28:00+08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>动态查看一个进程的内存使用</h3>
+
+<figure class='code'><figcaption><span>Show process memory usage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>top
+</span><span class='line'>top -d 1 -p pid <span class="o">[</span>,pid ...<span class="o">]</span> <span class="c">#设置为delay 1s， 默认delay是3s</span>
+</span><span class='line'><span class="c">#shit + m (Sort by memory usage)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/01/23/linux-process-memory/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -636,56 +672,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/24/copy-virtualbox-hd/">VirtualBox中复制使用虚拟硬盘</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-24T22:56:00+08:00" pubdate data-updated="true">Dec 24<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>VirtualBox可不像VMware那样，直接复制虚拟磁盘文件就可以了事的，只因为VirtualBox识别虚拟磁盘文件VDI采用了uuid识别技术。</p>
-
-<p>由于测试需要搭建局域网环境，需要两台虚拟机同时运行。当我安装完一个虚拟系统时，我将虚拟磁盘文件复制一份重新创建虚拟系统时提示打开虚拟硬盘 windowsxp.vdi 失败。</p>
-
-<pre><code>Cannot register the hard disk 'windowsxp.vdi' with UUID {24eb969f-8c98-470d-b2dd-35318f2b8860} 
-because a hard disk 'windowsxp.vdi' with UUID {24eb969f-8c98-470d-b2dd-35318f2b8860} already exists 
-in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
-</code></pre>
-
-<p>往Google里找寻了一番，原来Virtualbox也是有VBoxManage命令的,于是我决定给复制的vdi文件重新分配uuid。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/24/copy-virtualbox-hd/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -701,6 +687,10 @@ in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/01/23/linux-process-memory/">linux下查看进程内存使用情况</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/01/21/python-walk-rename-file/">Python循环遍历所有文件并改名</a>
       </li>
     
@@ -714,10 +704,6 @@ in the media registry ('/home/sager/VirtualBox VMs/windowsxp/windowsxp.vid').
     
       <li class="post">
         <a href="/blog/2013/01/15/linux-service-auto-startup/">配置Nginx和uWsig服务开机自动启动</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/15/linux-nginx-uwsgi/">Linux配置Nginx+uWsgi环境</a>
       </li>
     
   </ul>

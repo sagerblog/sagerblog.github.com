@@ -4,7 +4,7 @@
   <title><![CDATA[SagerXiao's Blog]]></title>
   <link href="http://sagerblog.github.com/atom.xml" rel="self"/>
   <link href="http://sagerblog.github.com/"/>
-  <updated>2013-01-21T18:51:18+08:00</updated>
+  <updated>2013-01-23T10:38:27+08:00</updated>
   <id>http://sagerblog.github.com/</id>
   <author>
     <name><![CDATA[Sager Xiao]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[linux下查看进程内存使用情况]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/23/linux-process-memory/"/>
+    <updated>2013-01-23T10:28:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/23/linux-process-memory</id>
+    <content type="html"><![CDATA[<h3>动态查看一个进程的内存使用</h3>
+
+<figure class='code'><figcaption><span>Show process memory usage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>top
+</span><span class='line'>top -d 1 -p pid <span class="o">[</span>,pid ...<span class="o">]</span> <span class="c">#设置为delay 1s， 默认delay是3s</span>
+</span><span class='line'><span class="c">#shit + m (Sort by memory usage)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
+
+
+<h3>静态查看一个进程的内存使用</h3>
+
+<figure class='code'><figcaption><span>Static show process memory usage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pmap pid
+</span><span class='line'>
+</span><span class='line'>ps aux|grep process_name
+</span><span class='line'>
+</span><span class='line'>cat /proc/pid/status
+</span><span class='line'>Name:   python
+</span><span class='line'>State:  S <span class="o">(</span>sleeping<span class="o">)</span>
+</span><span class='line'>Tgid:   1813
+</span><span class='line'>Pid:    1813
+</span><span class='line'>PPid:   1
+</span><span class='line'>TracerPid:  0
+</span><span class='line'>Uid:    501 501 501 501
+</span><span class='line'>Gid:    501 501 501 501
+</span><span class='line'>Utrace: 0
+</span><span class='line'>FDSize: 64
+</span><span class='line'>Groups: 501
+</span><span class='line'>VmPeak:   999456 kB
+</span><span class='line'>VmSize:   999456 kB
+</span><span class='line'>VmLck:         0 kB
+</span><span class='line'>VmHWM:     37628 kB
+</span><span class='line'>VmRSS:     37628 kB
+</span><span class='line'>VmData:   744284 kB
+</span><span class='line'>VmStk:       188 kB
+</span><span class='line'>VmExe:         4 kB
+</span><span class='line'>VmLib:     11548 kB
+</span><span class='line'>VmPTE:       532 kB
+</span><span class='line'>VmSwap:        0 kB
+</span><span class='line'>Threads:    19
+</span><span class='line'>SigQ:   0/30515
+</span><span class='line'>SigPnd: 0000000000000000
+</span><span class='line'>ShdPnd: 0000000000000000
+</span><span class='line'>SigBlk: 0000000000000000
+</span><span class='line'>SigIgn: 0000000001001007
+</span><span class='line'>SigCgt: 0000000180000000
+</span><span class='line'>CapInh: 0000000000000000
+</span><span class='line'>CapPrm: 0000000000000000
+</span><span class='line'>CapEff: 0000000000000000
+</span><span class='line'>CapBnd: ffffffffffffffff
+</span><span class='line'>Cpus_allowed:   1
+</span><span class='line'>Cpus_allowed_list:  0
+</span><span class='line'>Mems_allowed:   00000000,00000000,00000000,00000000,00000000,00000000,00000000,<span class="se">\</span>
+</span><span class='line'>00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+</span><span class='line'>Mems_allowed_list:  0
+</span><span class='line'>voluntary_ctxt_switches:    84
+</span><span class='line'>nonvoluntary_ctxt_switches: 356
+</span><span class='line'><span class="c">#任务虚拟地址空间的大小 VmSize</span>
+</span><span class='line'><span class="c">#应用程序正在使用的物理内存的大小 VmRSS</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Python循环遍历所有文件并改名]]></title>
