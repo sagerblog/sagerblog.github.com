@@ -4,7 +4,7 @@
   <title><![CDATA[Category: python | SagerXiao's Blog]]></title>
   <link href="http://sagerblog.github.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://sagerblog.github.com/"/>
-  <updated>2013-01-23T10:38:27+08:00</updated>
+  <updated>2013-01-28T13:48:25+08:00</updated>
   <id>http://sagerblog.github.com/</id>
   <author>
     <name><![CDATA[Sager Xiao]]></name>
@@ -12,6 +12,113 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Python应用只启动一个进程]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/28/python-startup-one-process/"/>
+    <updated>2013-01-28T13:35:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/28/python-startup-one-process</id>
+    <content type="html"><![CDATA[<p>后台进程我们只希望运行一次，我们可以通过对pid进行控制进程仅启动一次，参考程序</p>
+
+<p>```python Control one process
+import os, sys</p>
+
+<p>def lockPidFile(lockfile):</p>
+
+<pre><code>pidfile = open(lockfile, 'a+')
+try:
+    pid = pidfile.read()
+    if pid is not None and len(pid.strip()) &gt; 0:
+        tmpfile = lockfile + ".tmp"
+        os.system("ps -A|grep %s &gt; %s" % (pid, tmpfile))
+        tmp_size = os.path.getsize(tmpfile)
+        os.remove(tmpfile)
+        if (tmp_size &gt; 0):
+            return False
+
+    pidfile.close()
+    pidfile = open(lockfile, 'w')
+    pidfile.write(str(os.getpid()))
+    return True
+
+finally:
+    pidfile.close()
+
+return False
+</code></pre>
+
+<p>```</p>
+
+<!--more-->
+
+
+<p>```python
+def run():</p>
+
+<pre><code># run your application
+</code></pre>
+
+<p>if <strong>name</strong> == "<strong>main</strong>":</p>
+
+<pre><code>if not lockPidFile("/var/run/app.pid"):
+    print "Another process is running."
+    sys.exit(1)
+run()
+</code></pre>
+
+<p>```</p>
+
+<p>有了PID文件和pid之后，对应用的起停就可以使用这个PID来实现，以下是服务启停的脚本参考
+```bash service start,stop,restart</p>
+
+<h1>!/bin/bash</h1>
+
+<p>#</p>
+
+<h1>chkconfig: - 85 15</h1>
+
+<p>app=/usr/bin/your-app
+pidfile=/var/your-app.pid</p>
+
+<p>case $1 in</p>
+
+<pre><code>start)
+    echo -n "Starting your app"
+    nohup $app &gt;/var/log/app-console.log 2&gt;&amp;1 &amp;
+    if [ $? != 0 ]; then
+        echo
+        echo "Your app startup failed, please see detail information\
+            in '/var/log/app-console.log'."
+        echo
+    fi
+    echo " done"
+    ;;
+
+stop)
+    echo -n "Stopping your app"
+    kill -9 `cat $pidfile`
+    echo " done"
+    ;;
+
+restart)
+    $0 stop
+    $0 start
+    ;;
+
+show)
+    ps -ef|grep `cat $pidfile`
+    ;;
+
+*)
+    echo -n "Usage: $0 {start|restart|stop|show}"
+    ;;
+</code></pre>
+
+<p>esac</p>
+
+<p>```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Python循环遍历所有文件并改名]]></title>

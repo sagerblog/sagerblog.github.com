@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: collection | SagerXiao's Blog]]></title>
+  <link href="http://sagerblog.github.com/blog/categories/collection/atom.xml" rel="self"/>
+  <link href="http://sagerblog.github.com/"/>
+  <updated>2013-01-28T13:48:25+08:00</updated>
+  <id>http://sagerblog.github.com/</id>
+  <author>
+    <name><![CDATA[Sager Xiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[常用的shell指令]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/24/linux-shell-collections/"/>
+    <updated>2013-01-24T09:09:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/24/linux-shell-collections</id>
+    <content type="html"><![CDATA[<h3>1.合并所有lst文件，排序，去重，输出到my.list</h3>
+
+<p><code>bash Scripts collections
+cat *.lst|sort|uniq &gt; my.list   #合并排序去重
+</code></p>
+
+<h3>2.使用tar拷贝目录下的所有文件</h3>
+
+<p>```bash Copy all files
+(cd /source/directory &amp;&amp; tar cf - .)|(cd /dest/directory &amp;&amp; tar xpvf -)</p>
+
+<p>cd source/directory
+tar cf - . |（cd /dest/directory; tar xpvf -)</p>
+
+<p>cp -a /source/directory/<em> /dest/directory
+cp -a /source/directory/</em> /source/directory/.[<sup>.]*</sup> /dest/directory
+```</p>
+
+<p><code>bash Using tar
+bunzip2 linux-2.6.13.tar.bz2 | tar xvf -
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[SagerXiao's Blog]]></title>
   <link href="http://sagerblog.github.com/atom.xml" rel="self"/>
   <link href="http://sagerblog.github.com/"/>
-  <updated>2013-01-23T10:38:27+08:00</updated>
+  <updated>2013-01-28T13:48:25+08:00</updated>
   <id>http://sagerblog.github.com/</id>
   <author>
     <name><![CDATA[Sager Xiao]]></name>
@@ -12,6 +12,209 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Python应用只启动一个进程]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/28/python-startup-one-process/"/>
+    <updated>2013-01-28T13:35:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/28/python-startup-one-process</id>
+    <content type="html"><![CDATA[<p>后台进程我们只希望运行一次，我们可以通过对pid进行控制进程仅启动一次，参考程序</p>
+
+<figure class='code'><figcaption><span>Control one process</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">lockPidFile</span><span class="p">(</span><span class="n">lockfile</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">pidfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">lockfile</span><span class="p">,</span> <span class="s">&#39;a+&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">pid</span> <span class="o">=</span> <span class="n">pidfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">pid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">pid</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">tmpfile</span> <span class="o">=</span> <span class="n">lockfile</span> <span class="o">+</span> <span class="s">&quot;.tmp&quot;</span>
+</span><span class='line'>            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&quot;ps -A|grep </span><span class="si">%s</span><span class="s"> &gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="n">tmpfile</span><span class="p">))</span>
+</span><span class='line'>            <span class="n">tmp_size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">tmp_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+</span><span class='line'>                <span class="k">return</span> <span class="bp">False</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">pidfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">pidfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">lockfile</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">pidfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()))</span>
+</span><span class='line'>        <span class="k">return</span> <span class="bp">True</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">pidfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="bp">False</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+</span><span class='line'>    <span class="c"># run your application</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">if</span> <span class="ow">not</span> <span class="n">lockPidFile</span><span class="p">(</span><span class="s">&quot;/var/run/app.pid&quot;</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;Another process is running.&quot;</span>
+</span><span class='line'>        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">run</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>有了PID文件和pid之后，对应用的起停就可以使用这个PID来实现，以下是服务启停的脚本参考</p>
+
+<figure class='code'><figcaption><span>service start,stop,restart</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># chkconfig: - 85 15</span>
+</span><span class='line'><span class="nv">app</span><span class="o">=</span>/usr/bin/your-app
+</span><span class='line'><span class="nv">pidfile</span><span class="o">=</span>/var/your-app.pid
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="nv">$1</span> in
+</span><span class='line'>    start<span class="o">)</span>
+</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Starting your app&quot;</span>
+</span><span class='line'>        nohup <span class="nv">$app</span> &gt;/var/log/app-console.log 2&gt;&amp;1 &amp;
+</span><span class='line'>        <span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> !<span class="o">=</span> 0 <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">            </span><span class="nb">echo</span>
+</span><span class='line'><span class="nb">            echo</span> <span class="s2">&quot;Your app startup failed, please see detail information\</span>
+</span><span class='line'><span class="s2">                in &#39;/var/log/app-console.log&#39;.&quot;</span>
+</span><span class='line'>            <span class="nb">echo</span>
+</span><span class='line'><span class="nb">        </span><span class="k">fi</span>
+</span><span class='line'><span class="k">        </span><span class="nb">echo</span> <span class="s2">&quot; done&quot;</span>
+</span><span class='line'>        ;;
+</span><span class='line'>
+</span><span class='line'>    stop<span class="o">)</span>
+</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Stopping your app&quot;</span>
+</span><span class='line'>        <span class="nb">kill</span> -9 <span class="sb">`</span>cat <span class="nv">$pidfile</span><span class="sb">`</span>
+</span><span class='line'>        <span class="nb">echo</span> <span class="s2">&quot; done&quot;</span>
+</span><span class='line'>        ;;
+</span><span class='line'>
+</span><span class='line'>    restart<span class="o">)</span>
+</span><span class='line'>        <span class="nv">$0</span> stop
+</span><span class='line'>        <span class="nv">$0</span> start
+</span><span class='line'>        ;;
+</span><span class='line'>
+</span><span class='line'>    show<span class="o">)</span>
+</span><span class='line'>        ps -ef|grep <span class="sb">`</span>cat <span class="nv">$pidfile</span><span class="sb">`</span>
+</span><span class='line'>        ;;
+</span><span class='line'>
+</span><span class='line'>    *<span class="o">)</span>
+</span><span class='line'>        <span class="nb">echo</span> -n <span class="s2">&quot;Usage: $0 {start|restart|stop|show}&quot;</span>
+</span><span class='line'>        ;;
+</span><span class='line'>
+</span><span class='line'><span class="k">esac</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[常用的shell指令]]></title>
+    <link href="http://sagerblog.github.com/blog/2013/01/24/linux-shell-collections/"/>
+    <updated>2013-01-24T09:09:00+08:00</updated>
+    <id>http://sagerblog.github.com/blog/2013/01/24/linux-shell-collections</id>
+    <content type="html"><![CDATA[<h3>1.合并所有lst文件，排序，去重，输出到my.list</h3>
+
+<figure class='code'><figcaption><span>Scripts collections</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cat *.lst|sort|uniq &gt; my.list   <span class="c">#合并排序去重</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2.使用tar拷贝目录下的所有文件</h3>
+
+<figure class='code'><figcaption><span>Copy all files</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">(</span><span class="nb">cd</span> /source/directory <span class="o">&amp;&amp;</span> tar cf - .<span class="o">)</span>|<span class="o">(</span><span class="nb">cd</span> /dest/directory <span class="o">&amp;&amp;</span> tar xpvf -<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">cd source</span>/directory
+</span><span class='line'>tar cf - . |（cd /dest/directory; tar xpvf -<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>cp -a /source/directory/* /dest/directory
+</span><span class='line'>cp -a /source/directory/* /source/directory/.<span class="o">[</span>^.<span class="o">]</span>* /dest/directory
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Using tar</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>bunzip2 linux-2.6.13.tar.bz2 | tar xvf -
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[linux下查看进程内存使用情况]]></title>
